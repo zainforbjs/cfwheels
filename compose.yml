@@ -103,7 +103,7 @@ services:
       MYSQL_USER: wheelstestdb
       MYSQL_PASSWORD: wheelstestdb
     ports:
-      - "3307:3306"
+      - "3306:3306"
 
   postgres:
     image: postgres:latest
@@ -113,7 +113,7 @@ services:
       POSTGRES_PASSWORD: wheelstestdb
       POSTGRES_INITDB_ARGS: --auth-host=md5
     ports:
-      - "5433:5432"
+      - "5432:5432"
 
   sqlserver:
     build:
@@ -125,4 +125,4 @@ services:
       ACCEPT_EULA: Y
       MSSQL_PID: Developer
     ports:
-      - "1434:1433"
+      - "1433:1433"
