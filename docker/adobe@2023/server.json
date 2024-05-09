@@ -3,7 +3,6 @@
 	"force":true,
 	"web":{
 			"host":"localhost",
-			"webroot":"public",
 			"http":{
 					"port":"62023",
 					"enable":true
