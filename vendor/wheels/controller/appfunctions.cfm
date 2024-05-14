@@ -1,13 +1,13 @@
 <cfscript>
-	include "caching.cfm";
-	include "filters.cfm";
-	include "flash.cfm";
-	include "initialization.cfm";
-	include "layouts.cfm";
-	include "miscellaneous.cfm";
-	include "processing.cfm";
-	include "provides.cfm";
-	include "redirection.cfm";
-	include "rendering.cfm";
-	include "verifies.cfm";
+	include "/vendor/wheels/controller/caching.cfm";
+	include "/vendor/wheels/controller/filters.cfm";
+	include "/vendor/wheels/controller/flash.cfm";
+	include "/vendor/wheels/controller/initialization.cfm";
+	include "/vendor/wheels/controller/layouts.cfm";
+	include "/vendor/wheels/controller/miscellaneous.cfm";
+	include "/vendor/wheels/controller/processing.cfm";
+	include "/vendor/wheels/controller/provides.cfm";
+	include "/vendor/wheels/controller/redirection.cfm";
+	include "/vendor/wheels/controller/rendering.cfm";
+	include "/vendor/wheels/controller/verifies.cfm";
 </cfscript>

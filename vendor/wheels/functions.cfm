@@ -79,17 +79,17 @@
     // Include Wheels controller and global functions.
     // Include Wheels event functions (which in turn includes the developer's event files).
     include "/app/config/app.cfm";
-    include "controller/appfunctions.cfm";
-    include "global/appfunctions.cfm";
-    include "events/onapplicationend.cfm";
-    include "events/onapplicationstart.cfm";
-    include "events/onerror.cfm";
-    include "events/onabort.cfm";
-    include "events/onmissingtemplate.cfm";
-    include "events/onsessionend.cfm";
-    include "events/onsessionstart.cfm";
-    include "events/onrequest.cfm";
-    include "events/onrequestend.cfm";
-    include "events/onrequeststart.cfm";
+    include "/vendor/wheels/controller/appfunctions.cfm";
+    include "/vendor/wheels/global/appfunctions.cfm";
+    include "/vendor/wheels/events/onapplicationend.cfm";
+    include "/vendor/wheels/events/onapplicationstart.cfm";
+    include "/vendor/wheels/events/onerror.cfm";
+    include "/vendor/wheels/events/onabort.cfm";
+    include "/vendor/wheels/events/onmissingtemplate.cfm";
+    include "/vendor/wheels/events/onsessionend.cfm";
+    include "/vendor/wheels/events/onsessionstart.cfm";
+    include "/vendor/wheels/events/onrequest.cfm";
+    include "/vendor/wheels/events/onrequestend.cfm";
+    include "/vendor/wheels/events/onrequeststart.cfm";
 	
 </cfscript>
