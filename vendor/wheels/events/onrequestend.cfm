@@ -1,5 +1,5 @@
 <cfscript>
-// public void function onRequestEnd(required targetpage) {
+public void function onRequestEnd(required targetpage) {
 	local.lockName = "reloadLock" & application.applicationName;
 	$simpleLock(
 		name = local.lockName,
@@ -13,7 +13,7 @@
 	) {
 		$includeAndOutput(template = "/wheels/events/onrequestend/debug.cfm");
 	}
-// }
+}
 
 public void function $runOnRequestEnd(required targetpage) {
 	if (application.wheels.showDebugInformation) {

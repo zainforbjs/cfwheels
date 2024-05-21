@@ -1,5 +1,25 @@
 <cfscript>
-// public void function onApplicationStart() {
+public void function onApplicationStart() {
+
+	application.appDir     = expandPath("app/");
+	application.vendorDir  = expandPath("vendor/");
+	application.wheelsDir  = application.vendorDir & "wheels/";
+	application.wireboxDir = application.vendorDir & "wirebox/";
+	application.testboxDir = application.vendorDir & "testbox/";
+
+	// Set up the mappings for the application.
+	application.mappings["/app"]     = application.appDir;
+	application.mappings["/vendor"]  = application.vendorDir;
+	application.mappings["/wheels"]  = application.wheelsDir;
+	application.mappings["/wirebox"] = application.wireboxDir;
+	application.mappings["/testbox"] = application.testboxDir;
+	application.mappings["/tests"] = expandPath("tests/");
+	
+	wirebox = new wirebox.system.ioc.Injector("wheels.Wirebox");
+
+	/* wheels/global object */
+	application.wo = wirebox.getInstance("global");
+	
 	// Abort if called from incorrect file.
 	$abortInvalidRequest();
 
@@ -997,5 +1017,5 @@
 		}
 		$location(url = local.url, addToken = false);
 	}
-// }
+}
 </cfscript>

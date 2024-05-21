@@ -1,5 +1,13 @@
 <cfscript>
-// public void function onRequestStart(required targetPage) {
+public void function onRequestStart(required targetPage) {
+
+	if(structKeyExists(url, "format") && listFindNoCase("junit,json,txt", url.format))
+	{
+		application.contentOnly = true;
+	}else{
+		application.contentOnly = false;
+	}
+
 	local.lockName = "reloadLock" & application.applicationName;
 
 	// Abort if called from incorrect file.
@@ -38,7 +46,7 @@
 		type = "readOnly",
 		timeout = 180
 	);
-// }
+}
 
 public void function $runOnRequestStart(required targetPage) {
 	// If the first debug point has not already been set in a reload request we set it here.

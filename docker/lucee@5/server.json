@@ -3,7 +3,6 @@
 	"force":true,
 	"web":{
 			"host":"localhost",
-			"webroot":"public",
 			"http":{
 					"port":"60005",
 					"enable":true
@@ -18,5 +17,5 @@
 			"libDirs":"docker/lucee@5/lib",
 			"serverHomeDirectory":".engine/lucee@5"
 	},
-	"cfconfigFile":"docker/lucee@5/CFConfig.json"
+	"cfconfigFile":"CFConfig.json"
 }

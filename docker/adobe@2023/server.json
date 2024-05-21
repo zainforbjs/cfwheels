@@ -3,7 +3,6 @@
 	"force":true,
 	"web":{
 			"host":"localhost",
-			"webroot":"public",
 			"http":{
 					"port":"62023",
 					"enable":true
@@ -15,8 +14,8 @@
 	},
 	"app":{
 			"cfengine":"adobe@2023",
-			"libDirs":"docker/adobe2023/lib",
-			"serverHomeDirectory":".engine/adobe2023"
+			"libDirs":"docker/adobe@2023/lib",
+			"serverHomeDirectory":".engine/adobe@2023"
 	},
 	"cfconfigFile":"CFConfig.json"
 }
