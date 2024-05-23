@@ -274,16 +274,16 @@ component {
         }
 
         // Configurable paths.
-        application.$wheels.eventPath = "events";
+        application.$wheels.eventPath = "/app/events";
         application.$wheels.filePath = "files";
         application.$wheels.imagePath = "images";
         application.$wheels.javascriptPath = "javascripts";
-        application.$wheels.modelPath = "models";
-        application.$wheels.pluginPath = "plugins";
-        application.$wheels.pluginComponentPath = "plugins";
+        application.$wheels.modelPath = "/app/models";
+        application.$wheels.pluginPath = "/app/plugins";
+        application.$wheels.pluginComponentPath = "/app/plugins";
         application.$wheels.stylesheetPath = "stylesheets";
-        application.$wheels.viewPath = "views";
-        application.$wheels.controllerPath = "controllers";
+        application.$wheels.viewPath = "/app/views";
+        application.$wheels.controllerPath = "/app/controllers";
 
         // Test framework settings.
         application.$wheels.validateTestPackageMetaData = true;
