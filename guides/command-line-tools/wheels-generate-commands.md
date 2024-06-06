@@ -37,7 +37,7 @@ You can accept the name offered or change it to whatever name you like. We try t
 
 ![wheels new - step 2](<../.gitbook/assets/Screen Shot 2022-06-18 at 12.31.01 PM.png>)
 
-You can select a template to use. If you are reading this before CFWheels 2.4 is released you may want to select the Bleeding Edge Base Template.
+You can select a template to use for your app.
 
 ![wheels new - step 3](<../.gitbook/assets/Screen Shot 2022-06-18 at 12.32.14 PM.png>)
 
@@ -127,7 +127,7 @@ wheels generate route [objectname]
 
 ## `wheels generate controller`
 
-I generate a controller in the `controllers/` directory. You can either pass in a list of actions to stub out or the standard CRUD methods will be generated.
+I generate a controller in the `app/controllers/` directory. You can either pass in a list of actions to stub out or the standard CRUD methods will be generated.
 
 Create a user controller with full CRUD methods
 ```
@@ -147,7 +147,7 @@ wheels generate controller user index,customaction
 
 ## `wheels generate model`
 
-This command generates a model in the `models/` folder and creates the associated DB Table using migrations.
+This command generates a model in the `app/models/` folder and creates the associated DB Table using migrations.
 
 Create "users" table and "User.cfc" in models:
 ```
@@ -204,7 +204,7 @@ wheels generate property user isActive boolean 1
 
 ## `wheels generate view`
 
-This command generates a view file in the `views/` directory when specifying the object name and the action. If a directory for the object does not exist a subdirectory will be created in the `views/` directory and the action NAME.cfm file place into it.
+This command generates a view file in the `app/views/` directory when specifying the object name and the action. If a directory for the object does not exist a subdirectory will be created in the `app/views/` directory and the action NAME.cfm file place into it.
 
  Create a default file called show.cfm without a template
  ```
@@ -228,7 +228,7 @@ The "crud/show" parameter of this command is referring to an existing template t
 
 ## `wheels generate test`
 
-This command generates a test stub in `/test/TYPE/NAME.cfc`.
+This command generates a test stub in `/tests/Testbox/specs/TYPE/NAME.cfc`.
 
 ```
 wheels generate test model user
