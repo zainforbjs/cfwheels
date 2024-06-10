@@ -4,7 +4,7 @@
 
 - `/src/docker/` - New Docker based standalone test suite (not for CI)
 - `/src/docker/sqlserver` - SQL server specific config
-- `/src/docker/testui` - VueJS Test Suite front end
+- `/src/docker/testui` - Test Suite front end
 
 ### How to run
 
@@ -12,8 +12,10 @@
 - Increase Docker's default allocated 2GB memory to about 4GB
 - Ensure the following ports are free
   - `60005`
-  - `62016`
+  - `60006`
   - `62018`
+  - `62021`
+  - `62023`
   - `3000`
 - Navigate to the repo root
 - Run `docker compose up`
@@ -22,7 +24,7 @@
 
 If this is the first time you've run it, docker will download a lot of stuff, namely:
 
-- **Commandbox Docker image**, which in turn will get **Lucee5 / ACF2016 / ACF2018** (note, the Commandbox artifacts directory will be created/aliased to `/.Commandbox` for caching, so your images won't have to get them every time your image is rebuilt)
+- **Commandbox Docker image**, which in turn will get **Lucee5 / Lucee6 / ACF2018 / ACF2021 / ACF2023** (note, the Commandbox artifacts directory will be created/aliased to `/.Commandbox` for caching, so your images won't have to get them every time your image is rebuilt)
 - **MySQL**
 - **Postgres**
 - **MSSQL 2017**
@@ -32,7 +34,7 @@ Once all the images are downloaded (this may take some time), the databases will
 Once the Databases are running, the Commandbox images will start. URL Rewriting is included by default. Note we're not using Commandbox's default, as we need Wheels-specific rewrites
 
 ### Datasources
-Each database type is added as a datasource via `CFConfig.json` files. But there are different version of `CFConfig.json` for each flavor of engine. All engines get a copy of `wheelstestdb` which defaults to MySQL if no DB is sprecified. Additioanlly, all engines get a copy of `wheelstestdb_mysql`, `wheelstestdb_sqlserver`, and `wheelstestdb_postgres`. Please note, that due to a driver change between Adobe ColdFusion 2016 and 2018 the actual specification of `wheelstestdb_sqlserver` between those two engines are different Lastly, the Lucee engine gets and additional datasource `wheelstestdb_h2` for testing against the built in H2 Database.
+Each database type is added as a datasource via `CFConfig.json` files. But there are different version of `CFConfig.json` for each flavor of engine. All engines get a copy of `wheelstestdb` which defaults to MySQL if no DB is sprecified. Additioanlly, all engines get a copy of `wheelstestdb_mysql`, `wheelstestdb_sqlserver`, and `wheelstestdb_postgres`. Lastly, the Lucee engine gets an additional datasource `wheelstestdb_h2` for testing against the built in H2 Database.
 
 - `wheelstestdb` - Defaults to mySQL
 - `wheelstestdb_mysql` MySQL
@@ -40,7 +42,7 @@ Each database type is added as a datasource via `CFConfig.json` files. But there
 - `wheelstestdb_postgres` Postgres
 - `wheelstestdb_h2` H2 Database
 
-There's a new `db={{database}}` URL var which switches which datasource is used: the vue UI just appends this string to the test runner.
+There's a new `db={{database}}` URL var which switches which datasource is used: the TestUI just appends this string to the test runner.
 
 Please note that there is an additional datasource defined `msdb_sqlserver` which is initially used to create the wheelstestdb if it doesn't exists.
 
@@ -49,23 +51,25 @@ Please note that there is an additional datasource defined `msdb_sqlserver` whic
 Docker compose basically creates it's own internal network and exposes the various services on different ports. You shouldn't need to connect to the databases directly so those ports aren't exposed to prevent clashes with externally running services
 
 - Lucee 5 on `60005`
-- ACF2016 on `62016`
+- Lucee 6 on `60006`
 - ACF2018 on `62018`
-- Vue Front End on `3000`
+- ACF2021 on `62021`
+- ACF2023 on `62023`
+- TestUI on `3000`
 
 ### How to actually run the tests
 
 Use the Provided UI at `localhost:3000` for ease. This is just a glorified task runner which hits the respective endpoint for each server as required.
 
-You can also access each CF Engine directly on it's respective port, i.e, to access ACF2016, you just go to `localhost:62016`
+You can also access each CF Engine directly on it's respective port, i.e, to access ACF2018, you just go to `localhost:62018`
 
 A sample task runner URL is `http://localhost:60005/wheels/tests/core?reload=true&format=json&sort=directory asc&db=mysql`. You can change the port to hit a different engine and change the db name to test a different database.
 
 ### Other useful commands
 
-You can start specific services or rebuild specific services by name. If you just want to start ACF2016 or MSSQL, you can just do
+You can start specific services or rebuild specific services by name. If you just want to start ACF2018 or MSSQL, you can just do
 
-`docker compose up adobe2016` or `docker compose up sqlserver`
+`docker compose up adobe2018` or `docker compose up sqlserver`
 
 Likewise if you need to rebuild any of the images, you can do it on an image by image basis if needed:
 
