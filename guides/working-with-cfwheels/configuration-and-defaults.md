@@ -10,7 +10,7 @@ We all love the "Convention over Configuration" motto of CFWheels, but what abou
 
 ### Where Configurations Happen
 
-You will find configuration files in the `config` folder of your CFWheels application. In general, most of your settings will go in `config/settings.cfm`.
+You will find configuration files in the `app/config` folder of your CFWheels application. In general, most of your settings will go in `app/config/settings.cfm`.
 
 You can also set values based on what environment you have set. For example, you can have different values for your settings depending on whether you're in `development` mode or `production` mode. See the chapter on [Switching Environments](switching-environments.md) for more details.
 
@@ -20,7 +20,7 @@ To change a CFWheels application default, you generally use the [set()](https://
 
 ### How to Access Configuration Values
 
-Use the [get()](https://api.cfwheels.org/controller.gset.html) function to access the value of a CFWheels application setting. Just pass it the name of the setting.
+Use the [get()](https://api.cfwheels.org/controller.get.html) function to access the value of a CFWheels application setting. Just pass it the name of the setting.
 
 
 
@@ -34,9 +34,9 @@ if (get("environment") == "production") {
 
 ### Setting CFML Application Configurations
 
-In CFML's standard `Application.cfc`, you can normally set values for your application's properties in the `this`scope. CFWheels still provides these options to you in the file at `config/app.cfm`.
+In CFML's standard `Application.cfc`, you can normally set values for your application's properties in the `this`scope. CFWheels still provides these options to you in the file at `app/config/app.cfm`.
 
-Here is an example of what can go in `config/app.cfm`:
+Here is an example of what can go in `app/config/app.cfm`:
 
 {% code title="config/app.cfm" %}
 ```javascript
@@ -75,9 +75,9 @@ Let's take a closer look at each of these options.
 
 Not only are the environments useful for separating your production settings from your "under development" settings, but they are also opportunities for you to override settings that will only take effect in a specified environment.
 
-The setting for the current environment can be found in `config/environment.cfm` and should look something like this:
+The setting for the current environment can be found in `app/config/environment.cfm` and should look something like this:
 
-{% code title="config/environment.cfm" %}
+{% code title="app/config/environment.cfm" %}
 ```javascript
 set(environment="development");
 ```
@@ -87,7 +87,7 @@ set(environment="development");
 
 | Name                         | Type    | Default                               | Description                                                                                                                                                                                                                              |
 | ---------------------------- | ------- | ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| environment                  | string  | development                           | Environment to load. Set this value in config/environment.cfm. Valid values are development, testing, maintenance, and production.                                                                                                       |
+| environment                  | string  | development                           | Environment to load. Set this value in app/config/environment.cfm. Valid values are development, testing, maintenance, and production.                                                                                                       |
 | reloadPassword               | string  | \[empty string]                       | Password to require when reloading the CFWheels application from the URL. Leave empty to require no password.                                                                                                                            |
 | redirectAfterReload          | boolean | Enabled in maintenance and production | Whether or not to redirect away from the current URL when it includes a reload request. This hinders accidentally exposing your application's reload URL and password in web analytics software, screenshots of the browser, etc.        |
 | ipExceptions                 | string  | \[empty string]                       | IP addresses that CFWheels will ignore when the environment is set to maintenance. That way administrators can test the site while in maintenance mode, while the rest of users will see the message loaded in events/onmaintenance.cfm. |
@@ -107,7 +107,7 @@ The code above will tell CFWheels to skip its automatic detection of the URL Rew
 
 You can also set it to "Partial" if you believe that your web server is capable of rewriting the URL as folders after `index.cfm`.
 
-For more information, read the chapter about [URL Rewriting](https://guides.cfwheels.org/cfwheels-guides/handling-requests-with-controllers/url-rewriting).
+For more information, read the chapter about [URL Rewriting](https://guides.cfwheels.org/2.5.0/v/3.0.0-snapshot/handling-requests-with-controllers/url-rewriting).
 
 ### Data Source Settings
 
@@ -145,7 +145,7 @@ For example, let's say that we want to enable debugging information in our "deve
 
 {% code title="CFScript" %}
 ```javascript
-// /config/development/settings.cfm
+// /app/config/development/settings.cfm
 set(showDebugInformation=false);
 ```
 {% endcode %}
@@ -231,7 +231,7 @@ Now your `post` model will map to the `blog_posts` table, `comment` model will m
 
 There are several settings that make plugin development more convenient. We recommend only changing these settings in `development` mode so there aren't any deployment issues in `production`, `testing`, and `maintenance`modes. (At that point, your plugin should be properly packaged in a zip file.)
 
-If you want to keep what's stored in a plugin's zip file from overwriting changes that you made in its expanded folder, set this in `config/development/settings.cfm`:
+If you want to keep what's stored in a plugin's zip file from overwriting changes that you made in its expanded folder, set this in `app/config/development/settings.cfm`:
 
 {% code title="CFScript" %}
 ```javascript
@@ -239,7 +239,7 @@ set(overwritePlugins=false);
 ```
 {% endcode %}
 
-See the chapter on [Installing and Using Plugins](https://guides.cfwheels.org/docs/installing-and-using-plugins) for more information.
+See the chapter on [Installing and Using Plugins](https://guides.cfwheels.org/2.5.0/v/3.0.0-snapshot/plugins/installing-and-using-plugins) for more information.
 
 | Name                    | Type    | Default | Description                                                                                                                                                                                                                                                  |
 | ----------------------- | ------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -265,7 +265,7 @@ See the chapter about [Date, Media, and Text Helpers](../displaying-views-to-use
 
 CFWheels includes a powerful routing system. Parts of it are configurable with the following settings.
 
-See the chapters about [Using Routes](https://guides.cfwheels.org/cfwheels-guides/handling-requests-with-controllers/routing) and [Obfuscating URLs](../handling-requests-with-controllers/obfuscating-urls.md) for more information about how this all works together.
+See the chapters about [Using Routes](https://guides.cfwheels.org/2.5.0/v/3.0.0-snapshot/handling-requests-with-controllers/routing) and [Obfuscating URLs](../handling-requests-with-controllers/obfuscating-urls.md) for more information about how this all works together.
 
 **Full Listing of Miscellaneous Settings**
 
@@ -326,6 +326,6 @@ In this first version, the user can enable this feature, which will allow reques
 | autoMigrateDatabase   | Boolean | false                            | Automatically runs available migration on applicationstart.                                                                    |
 | migratorTableName     | String  | migratorversions                 | The name of the table that stores the versions migrated.                                                                       |
 | createMigratorTable   | Boolean | true                             | Create the migratorversions database table.                                                                                    |
-| writeMigratorSQLFiles | Boolean | false                            | Writes the executed SQL to a .sql file in the /migrator/sql directory.                                                         |
+| writeMigratorSQLFiles | Boolean | false                            | Writes the executed SQL to a .sql file in the app/migrator/sql directory.                                                         |
 | migratorObjectCase    | String  | lower                            | Specifies the case of created database object. Options are 'lower', 'upper' and 'none' (which uses the given value unmodified) |
 | allowMigrationDown    | Boolean | false (true in development mode) | Prevents 'down' migrations (rollbacks)                                                                                         |
