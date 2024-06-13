@@ -88,10 +88,10 @@ of the box.
 * `xls`
 
 You can use [addFormat()](https://api.cfwheels.org/controller.addformat.html) to set more types to the appropriate MIME type for reference. For example, we could set a Microsoft Word MIME type in\
-`config/settings.cfm` like so:&#x20;
+`app/config/settings.cfm` like so:&#x20;
 
 ```javascript
-addFormat(extension="doc", mimeType="application/msword");
+application.wo.addFormat(extension="doc", mimeType="application/msword");
 ```
 
 ### Responding to Different Formats in the Controller
@@ -109,7 +109,7 @@ component extends="Controller" {
   }
   
   function index(){
-    products = model("product").findAll(order="title");
+    products = application.wo.model("product").findAll(order="title");
     renderWith(products);
   }
 }
@@ -129,7 +129,7 @@ When CFWheels handles this response, it will set the appropriate MIME type in th
 
 ### Providing the HTML Format
 
-Responding to requests for the HTML version is the same as you're already used to with [Rendering Content](https://guides.cfwheels.org/cfwheels-guides/handling-requests-with-controllers/rendering-content). [renderwith()](https://api.cfwheels.org/controller.renderwith.html) will accept the same arguments as [renderView()](https://api.cfwheels.org/controller.renderview.html), and you create just a view template in the `views` folder like normal.
+Responding to requests for the HTML version is the same as you're already used to with [Rendering Content](https://guides.cfwheels.org/2.5.0/v/3.0.0-snapshot/handling-requests-with-controllers/rendering-content). [renderwith()](https://api.cfwheels.org/controller.renderwith.html) will accept the same arguments as [renderView()](https://api.cfwheels.org/controller.renderview.html), and you create just a view template in the `views` folder like normal.
 
 ### Automatic Generation of XML and JSON Formats
 
@@ -142,7 +142,7 @@ Unfortunately there have been a lot of JSON related issues in CFML over the year
 First of all, always return data as an array of structs. This is done by using the `returnAs` argument (on [findAll()](https://api.cfwheels.org/model.findall.html) for example), like this:
 
 ```javascript
-authors = model("author").findAll(returnAs="structs");
+authors = application.wo.model("author").findAll(returnAs="structs");
 ```
 
 The reason for doing it this way is that it will preserve the case for the struct / JSON keys.
@@ -160,17 +160,17 @@ With that in place you can be sure that `firstName` will always be treated as a 
 If you need to provide content for another type than `xml` or `json`, or if you\
 need to customize what your CFWheels application generates, you have that option.
 
-In your controller's corresponding folder in `views`, all you need to do is\
+In your controller's corresponding folder in `app/views`, all you need to do is\
 implement a view file like so:
 
-| Type | Example                       |
-| ---- | ----------------------------- |
-| html | views/products/index.cfm      |
-| xml  | views/products/index.xml.cfm  |
-| json | views/products/index.json.cfm |
-| csv  | views/products/index.csv.cfm  |
-| pdf  | views/products/index.pdf.cfm  |
-| xls  | views/products/index.xls.cfm  |
+| Type | Example                           |
+| ---- | --------------------------------- |
+| html | app/views/products/index.cfm      |
+| xml  | app/views/products/index.xml.cfm  |
+| json | app/views/products/index.json.cfm |
+| csv  | app/views/products/index.csv.cfm  |
+| pdf  | app/views/products/index.pdf.cfm  |
+| xls  | app/views/products/index.xls.cfm  |
 
 If you need to implement your own XML- or JSON-based output, the presence of\
 your new custom view file will override the automatic generation that CFWheels\
@@ -179,7 +179,7 @@ normally performs.
 **Example: PDF Generation**
 
 If you need to provide a PDF version of the product catalog, the view file at\
-`views/products/index.pdf.cfm` may look something like this:
+`app/views/products/index.pdf.cfm` may look something like this:
 
 HTML
 

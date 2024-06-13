@@ -20,7 +20,7 @@ To make sure that we don't have too many chefs in the kitchen, we will be limiti
 At this time, the core team consists of these developers:
 
 * [Peter Amiri](https://github.com/bpamiri)
-* [Andy Bellenie](https://twitter.com/andrewbellenie)
+* [Zain Ul Abideen](https://github.com/zainforbjs)
 
 This does not restrict you from being able to contribute. See "Process for Implementing Code Changes" below for instructions on volunteering. With enough dedication, you can earn a seat on the core team as well!
 

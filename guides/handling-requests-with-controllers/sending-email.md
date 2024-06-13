@@ -14,7 +14,7 @@ Getting this to work in CFWheels can be broken down in 3 steps. We'll walk you t
 
 We recommend using CFWheels ability to set global defaults for [sendEmail()](https://api.cfwheels.org/controller.sendemail.html) so that you don't have to specify more arguments than necessary in your controller files. Because it's likely that you will use the same mail server across your application, this makes it worthwhile to set a global default for it.
 
-This setting should be done in the `config/settings.cfm` file and can look something like this:
+This setting should be done in the `app/config/settings.cfm` file and can look something like this:
 
 {% code title="Example" %}
 ```javascript
@@ -31,9 +31,9 @@ By specifying these values here, these arguments can be omitted from all [sendEm
 
 But you are not limited to setting only these 3 variables. In fact, you can set a global default for any optional argument to  [sendEmail()](https://api.cfwheels.org/controller.sendemail.html) and since it accepts the same arguments that `cfmail` does. That's quite a few.
 
-Alternatively, most modern CFML engines allow setting SMTP information directly within the application configuration. So you can actually add this in `/config/app.cfm`: here's an example configuration:
+Alternatively, most modern CFML engines allow setting SMTP information directly within the application configuration. So you can actually add this in `/app/config/app.cfm`: here's an example configuration:
 
-{% code title="config/app.cfm" %}
+{% code title="app/config/app.cfm" %}
 ```javascript
 // Lucee:
 this.tag.mail.server="smtp.mydomain.com";
@@ -55,14 +55,14 @@ this.smtpServersettings = {
 
 An email template is required for [sendEmail()](https://api.cfwheels.org/controller.sendemail.html) to work and forms the basis for the mail message content. Think of an email template as the content of your email.
 
-Templates may be stored anywhere within the `/views/` folder, but we recommend a structured, logical approach. If different controllers utilize [sendEmail()](https://api.cfwheels.org/controller.sendemail.html)\
-and each require a unique template, place each email template within the `views/controllername` folder structure.
+Templates may be stored anywhere within the `/app/views/` folder, but we recommend a structured, logical approach. If different controllers utilize [sendEmail()](https://api.cfwheels.org/controller.sendemail.html)\
+and each require a unique template, place each email template within the `app/views/controllername` folder structure.
 
 Consider this example scenario:
 
-| Controller:  | Email Template:                         |
-| ------------ | --------------------------------------- |
-| `Membership` | `/views/membership/myemailtemplate.cfm` |
+| Controller:  | Email Template:                             |
+| ------------ | ------------------------------------------- |
+| `Membership` | `/app/views/membership/myemailtemplate.cfm` |
 
 Multiple templates may be stored within this directory should there be a need.
 
@@ -94,7 +94,7 @@ Consider the following example:
 
 {% code title="Example" %}
 ```javascript
-member = model("member").findByKey(newMember.id);
+member = application.wo.model("member").findByKey(newMember.id);
 sendEmail(
     from="service@yourwebsite.com",
     to=member.email,
@@ -122,10 +122,10 @@ Like the `template` argument, the logic for which file to include follows the sa
 
 ### Attaching Files
 
-You can attach files to your emails as well by using the `file` argument (or `files` argument if you want multiple attachments). Simply pass in the name of a file that exists in the `files` folder (or a subfolder of it) of your application.
+You can attach files to your emails as well by using the `file` argument (or `files` argument if you want multiple attachments). Simply pass in the name of a file that exists in the `public/files` folder (or a subfolder of it) of your application.
 
 ```javascript
-// Send files/termsAndConditions.pdf
+// Send public/files/termsAndConditions.pdf
 sendEmail(
     to="tom@domain.com",
     from="tom@domain.com",
@@ -161,7 +161,7 @@ sendEmail(
 
 ### Using Email Layouts
 
-Much like the layouts outlined in the [Layouts](https://guides.cfwheels.org/cfwheels-guides/displaying-views-to-users/layouts) chapter, you can also create layouts for your emails.
+Much like the layouts outlined in the [Layouts](https://guides.cfwheels.org/2.5.0/v/3.0.0-snapshot/displaying-views-to-users/layouts) chapter, you can also create layouts for your emails.
 
 A layout should be used just as the name implies: for layout and stylistic aspects of the email body. Based on the example given above, let's assume that the same email content needs to be sent twice.
 
@@ -176,7 +176,7 @@ In this case, the two calls to [sendEmail()](https://api.cfwheels.org/controller
 {% code title="Example" %}
 ```javascript
 // Get new member.
-member = model("member").findByKey(params.key);
+member = application.wo.model("member").findByKey(params.key);
 
 // Customer email with customized header/footer.
 sendEmail(
@@ -206,7 +206,7 @@ sendEmail(
 
 CFWheels also lets you set up layouts for the HTML and plain text parts in a multipart email.
 
-If we set up generic email layouts at `views/plainemaillayout.cfm` and `views/htmlemaillayout.cfm`, we would call [sendEmail()](https://api.cfwheels.org/controller.sendemail.html) like so:
+If we set up generic email layouts at `app/views/plainemaillayout.cfm` and `app/views/htmlemaillayout.cfm`, we would call [sendEmail()](https://api.cfwheels.org/controller.sendemail.html) like so:
 
 {% code title="Example" %}
 ```javascript
