@@ -12,7 +12,7 @@ Wheels's included view helper functions can help you out in those tricky little 
 * Media Helpers
 * Text Helpers
 
-We also have separate chapters about Wheels form helpers in [Form Helpers and Showing Errors](https://guides.cfwheels.org/cfwheels-guides/displaying-views-to-users/form-helpers-and-showing-errors) and creating your own helpers in [Creating Custom View Helpers](https://guides.cfwheels.org/cfwheels-guides/displaying-views-to-users/creating-custom-view-helpers).
+We also have separate chapters about Wheels form helpers in [Form Helpers and Showing Errors](https://guides.cfwheels.org/2.5.0/v/3.0.0-snapshot/displaying-views-to-users/form-helpers-and-showing-errors) and creating your own helpers in [Creating Custom View Helpers](https://guides.cfwheels.org/2.5.0/v/3.0.0-snapshot/displaying-views-to-users/creating-custom-view-helpers).
 
 ### Date Helpers
 
@@ -42,7 +42,7 @@ Instead of "April 27, 2009 10:10 pm," it may be more helpful to display "a few m
     <div class="comment">
         <h2>#comments.title#</h2>
 
-        <p class="timestamp">(#timeAgoInWords(comments.createdAt)#)</p>
+        <p class="timestamp">(#application.wo.timeAgoInWords(comments.createdAt)#)</p>
         <p>#comments.comment#</p>
     </div>
 </cfoutput>
@@ -56,7 +56,7 @@ Working with media is also a walk in the park with Wheels. Let's jump into a few
 
 **Style Sheets**
 
-First, to include CSS files in your layout, you can use the [styleSheetLinkTag()](https://api.cfwheels.org/v2.2/controller.styleSheetLinkTag.html) function:
+First, to include CSS files in your layout, you can use the [styleSheetLinkTag()](https://api.cfwheels.org/controller.styleSheetLinkTag.html) function:
 
 ```javascript
 <!--- layout.cfm --->
@@ -65,7 +65,7 @@ First, to include CSS files in your layout, you can use the [styleSheetLinkTag()
 </cfoutput>
 ```
 
-This will generate the `<link>` tag for you with everything needed to include the file at `stylesheets/main.css`.
+This will generate the `<link>` tag for you with everything needed to include the file at `public/stylesheets/main.css`.
 
 If you need to include more than one style sheet and change the media type to "print" for another, there are arguments for that as well:&#x20;
 
@@ -83,7 +83,7 @@ Lastly, you can also link to stylesheets at a different domain or subdomain by s
 
 **JavaScript Files**
 
-Including JavaScript files is just as simple with the [javaScriptIncludeTag()](https://api.cfwheels.org/controller.javascriptincludetag.html) helper. This time, files are referenced from the _**javascripts**_ folder.
+Including JavaScript files is just as simple with the [javaScriptIncludeTag()](https://api.cfwheels.org/controller.javascriptincludetag.html) helper. This time, files are referenced from the _**public/javascripts**_ folder.
 
 ```javascript
 #javaScriptIncludeTag("jquery")#
@@ -105,7 +105,7 @@ Wheels's [imageTag()](https://api.cfwheels.org/controller.imagetag.html) helper 
 </cfoutput>
 ```
 
-With this simple call, Wheels will generate the `<img>` tag for `images/logo.png` and also set the `width`, `height` and `alt` attributes automatically for you (based on image dimensions and the image file name). Wheels will also cache this information for later use in your application.
+With this simple call, Wheels will generate the `<img>` tag for `public/images/logo.png` and also set the `width`, `height` and `alt` attributes automatically for you (based on image dimensions and the image file name). Wheels will also cache this information for later use in your application.
 
 If you need to override the `alt` attribute for better accessibility, you can still do that too:
 
@@ -128,7 +128,7 @@ To illustrate what the text helpers can help you with, let's see a piece of code
     <p>
        #highlight(text="Your search for #params.q#", phrases=params.q)#
        returned #searchResults.RecordCount#
-       #pluralize(word="result", count=searchResults.RecordCount)#.
+       #application.wo.pluralize(word="result", count=searchResults.RecordCount)#.
     </p>
 </cfoutput>
 ```
