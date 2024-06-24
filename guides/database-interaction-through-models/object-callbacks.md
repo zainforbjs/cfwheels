@@ -84,7 +84,7 @@ The following 16 functions can be used to register callbacks.
 
 As you can see above, there are a few places (5, to be exact) where one callback or the other will be executed, but not both.
 
-The very first possible callback that can take place in an object's life cycle is either [afterNew()](https://api.cfwheels.org/model.afternew.html) or [afterFind](https://api.cfwheels.org/model.afterfind.html). The [afterNew()](https://api.cfwheels.org/model.afternew.html) callback methods are triggered when you create the object yourself for the very first time, for example, when using the [new()](https://api.cfwheels.org/model.new.html) method. [afterFind()](https://api.cfwheels.org/v2.2/model.afterFind.html) is triggered when the object is created as a result of fetching a record from the database, for example, when using [findByKey()](https://api.cfwheels.org/v2.2/model.findByKey.html). (There is some special behavior for this callback type that we'll explain in detail later on in this chapter).
+The very first possible callback that can take place in an object's life cycle is either [afterNew()](https://api.cfwheels.org/model.afternew.html) or [afterFind](https://api.cfwheels.org/model.afterfind.html). The [afterNew()](https://api.cfwheels.org/model.afternew.html) callback methods are triggered when you create the object yourself for the very first time, for example, when using the [new()](https://api.cfwheels.org/model.new.html) method. [afterFind()](https://api.cfwheels.org/model.afterFind.html) is triggered when the object is created as a result of fetching a record from the database, for example, when using [findByKey()](https://api.cfwheels.org/model.findByKey.html). (There is some special behavior for this callback type that we'll explain in detail later on in this chapter).
 
 The remaining callbacks get executed depending on whether or not we're running a "create," "update," or "delete" operation.
 
@@ -104,14 +104,14 @@ When an object is saved in your application, these two callbacks will be execute
 
 ### Special Case #1: findAll() and the afterFind() Callback
 
-When you read about the [afterFind()](https://api.cfwheels.org/model.afterfind.html) callback above, you may have thought that it must surely only work for [findOne()](https://api.cfwheels.org/model.findone.html)/ [findByKey()](https://api.cfwheels.org/model.findbyjey.html) calls but not for [findAll()](https://api.cfwheels.org/model.afterfind.html) because those calls return query result sets by default, not objects.
+When you read about the [afterFind()](https://api.cfwheels.org/model.afterfind.html) callback above, you may have thought that it must surely only work for [findOne()](https://api.cfwheels.org/model.findone.html)/ [findByKey()](https://api.cfwheels.org/model.findbykey.html) calls but not for [findAll()](https://api.cfwheels.org/model.findall.html) because those calls return query result sets by default, not objects.
 
-Believe it or not, but callbacks are even triggered on [findAll()](https://api.cfwheels.org/model.afterfind.html)! You do need to write your callback code differently though because there will be no `this` scope in the query object. Instead of modifying properties in the `this` scope like you normally would, the properties are passed to the callback method via the `arguments` struct.
+Believe it or not, but callbacks are even triggered on [findAll()](https://api.cfwheels.org/model.findall.html)! You do need to write your callback code differently though because there will be no `this` scope in the query object. Instead of modifying properties in the `this` scope like you normally would, the properties are passed to the callback method via the `arguments` struct.
 
 {% hint style="info" %}
 #### Column Types
 
-We recommend that you respect the query column types. If you have a date / time value in the query, don't try to change it to a string for example. Some engines will allow it while others (CF 2016 for example) won't.
+We recommend that you respect the query column types. If you have a date / time value in the query, don't try to change it to a string for example. Some engines will allow it while others won't.
 {% endhint %}
 
 Does that sound complicated? This example should clear it up a little. Let's show some code to display how you can handle setting a `fullName` property on a hypothetical `artist` model.
@@ -146,7 +146,7 @@ Always remember to return the `arguments` struct, otherwise Wheels won't be able
 Note that callbacks set on included models are not executed. Look at this example:
 
 ```javascript
-fooBars = model("foo").findAll(include="bars");
+fooBars = application.wo.model("foo").findAll(include="bars");
 ```
 
 That will cause callback to be executed on the `Foo` model but not the `Bar` model.

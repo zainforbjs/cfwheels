@@ -11,9 +11,9 @@ description: >-
 
 In order to establish the full cycle of validation, 3 elements need to be in place:
 
-* **Model** file containing business logic for the database table. Example: `models/User.cfc`
-* **Controller** file for creating, saving or updating a model instance. Example: `controllers/Users.cfc`
-* **View** file for displaying the original data inputs and an error list. Example: `views/users/index.cfm`
+* **Model** file containing business logic for the database table. Example: `app/models/User.cfc`
+* **Controller** file for creating, saving or updating a model instance. Example: `app/controllers/Users.cfc`
+* **View** file for displaying the original data inputs and an error list. Example: `app/views/users/index.cfm`
 
 **Note**: Saving, creating, and updating model objects can also be done from the model file itself (or even in the view file if you want to veer completely off into the wild). But to keep things simple, all examples in this chapter will revolve around code in the controller files.
 
@@ -76,11 +76,11 @@ By default, these validations will run without your needing to set up anything i
 
 Note these extra behaviors as well:
 
-* Automatic validations will not run for [Automatic Time Stamps](https://guides.cfwheels.org/cfwheels-guides/database-interaction-through-models/automatic-time-stamps).
+* Automatic validations will not run for [Automatic Time Stamps](https://guides.cfwheels.org/2.5.0/v/3.0.0-snapshot/database-interaction-through-models/automatic-time-stamps).
 * If you've already set a validation on a particular property in your model, the automatic validations will be overridden by your settings.
 * If your database column provides a default value for a given field, Wheels will not enforce a [validatesPresenceOf()](https://api.cfwheels.org/model.validatespresenceof.html)rule on that property.
 
-To disable automatic validations in your Wheels application, change this setting in `config/settings.cfm:`
+To disable automatic validations in your Wheels application, change this setting in `app/config/settings.cfm:`
 
 ```javascript
 set(automaticValidations=false);
@@ -88,7 +88,7 @@ set(automaticValidations=false);
 
 You can also turn on or off the automatic validations on a per model basis by calling the [automaticValidations()](https://api.cfwheels.org/v2.2/model.automaticValidations.html) method from a model's `config()` method.
 
-See the chapter on [Configuration and Defaults](https://guides.cfwheels.org/cfwheels-guides/working-with-cfwheels/configuration-and-defaults) for more information on available Wheels ORM settings.
+See the chapter on [Configuration and Defaults](https://guides.cfwheels.org/2.5.0/v/3.0.0-snapshot/working-with-cfwheels/configuration-and-defaults) for more information on available Wheels ORM settings.
 
 ### Use when, condition, or unless to Limit the Scope of Validation
 
@@ -184,7 +184,7 @@ component extends="Controller" {
 
     public function save() {
         //  User model from form fields via params 
-        newUser = model("user").new(params.newUser);
+        newUser = application.wo.model("user").new(params.newUser);
         //  Persist new user 
         if ( newUser.save() ) {
             redirectTo(action="success");
@@ -201,7 +201,7 @@ The first line of the action creates a `newUser` based on the `user` model and t
 
 Now, to persist the object to the database, the model's [save()](https://api.cfwheels.org/model.save.html) call can be placed within a `<cfif>` test. If the save succeeds, the [save()](https://api.cfwheels.org/model.save.html) method will return `true`, and the contents of the `<cfif>` will be executed. But if any of the validations set up in the model fail, the [save()](https://api.cfwheels.org/model.save.html) method returns `false`, and the `<cfelse>` will execute.
 
-The important step here is to recognize that the `<cfelse>` renders the original form input page using the [renderView()](https://api.cfwheels.org/v2.2/controller.renderWith.html)function. When this happens, the view will use the `newUser` object defined in our [save()](https://api.cfwheels.org/model.save.html) method. If a [redirectTo()](https://api.cfwheels.org/controller.redirectto.html) were used instead, the validation information loaded in our [save()](https://api.cfwheels.org/model.save.html) method would be lost.
+The important step here is to recognize that the `<cfelse>` renders the original form input page using the [renderView()](https://api.cfwheels.org/controller.renderWith.html) function. When this happens, the view will use the `newUser` object defined in our [save()](https://api.cfwheels.org/model.save.html) method. If a [redirectTo()](https://api.cfwheels.org/controller.redirectto.html) were used instead, the validation information loaded in our [save()](https://api.cfwheels.org/model.save.html) method would be lost.
 
 ### The View
 
@@ -228,9 +228,9 @@ Wheels factors out much of the error display code that you'll ever need. As you 
 </cfoutput>
 ```
 
-The biggest thing to note in this example is that a field called `passwordConfirmation` was provided so that the [validatesConfirmationOf()](https://api.cfwheels.org/v2.2/model.validatesConfirmationOf.html) validation in the model can be properly tested.
+The biggest thing to note in this example is that a field called `passwordConfirmation` was provided so that the [validatesConfirmationOf()](https://api.cfwheels.org/model.validatesConfirmationOf.html) validation in the model can be properly tested.
 
-For more information on how this code behaves when there is an error, refer to the [Form Helpers and Showing Errors](https://guides.cfwheels.org/cfwheels-guides/displaying-views-to-users/form-helpers-and-showing-errors)chapter.
+For more information on how this code behaves when there is an error, refer to the [Form Helpers and Showing Errors](https://guides.cfwheels.org/2.5.0/v/3.0.0-snapshot/displaying-views-to-users/form-helpers-and-showing-errors) chapter.
 
 ### Error Messages
 
@@ -255,7 +255,7 @@ There are 2 ways to accomplish this: through global defaults in your config file
 
 ### Setting Global Defaults for Error Messages
 
-Using basic global defaults for the validation functions, you can set error messages in your config file at `config/settings.cfm`.
+Using basic global defaults for the validation functions, you can set error messages in your config file at `app/config/settings.cfm`.
 
 ```javascript
 set(functionName="validatesPresenceOf", message="Please provide a value for [property]");

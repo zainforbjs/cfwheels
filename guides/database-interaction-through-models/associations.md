@@ -20,7 +20,7 @@ If your database table contains a field that is a foreign key to another table, 
 
 If we had a comments table that contains a foreign key to the posts table called `postid`, then we would have this `config()` method within our comment model:
 
-{% code title="models/comment.cfc" %}
+{% code title="app/models/comment.cfc" %}
 ```javascript
 component extends="Model" {
 
@@ -42,7 +42,7 @@ At this time, you need to be a little eccentric and talk to yourself. Your assoc
 
 So let's consider the `post / comment` relationship mentioned above for `belongsTo()`. If we were to talk to ourselves, we would say, "A post has many comments." And that's how you should construct your post model:
 
-{% code title="models/Post.cfc" %}
+{% code title="app/models/Post.cfc" %}
 ```javascript
 component extends="Model" {
 
@@ -66,7 +66,7 @@ Let's consider an association between `user` and `profile`. A lot of websites al
 
 In this case, our `profile` model would look like this:
 
-{% code title="models/profile.cfc" %}
+{% code title="app/models/profile.cfc" %}
 ```javascript
 component extends="Model" {
 
@@ -80,7 +80,7 @@ component extends="Model" {
 
 And our user model would look like this:
 
-{% code title="models/user.cfc" %}
+{% code title="app/models/user.cfc" %}
 ```javascript
 component extends="Model" {
 
@@ -104,7 +104,7 @@ A dependency is when an associated model relies on the existence of its parent. 
 
 CFWheels makes this easy for you. When setting up your association, simply add the argument `dependent` with one of the following values, and CFWheels will automatically deal with the dependency.
 
-In your model .cfc file config() function::
+In your `model.cfc` file's `config()` function::
 
 ```javascript
 // Instantiates the `profile` model and calls its `delete()` method.
@@ -126,7 +126,7 @@ You can create dependencies on `hasOne()` and `hasMany()` associations, but not 
 
 It's possible for a model to be associated to itself. Take a look at the below setup where an employee belongs to a manager for example:
 
-{% code title="models/employee.cfc" %}
+{% code title="app/models/employee.cfc" %}
 ```javascript
 component extends="Model" {
 
@@ -146,12 +146,12 @@ This is important to remember because if you, for example, want to select the ma
 
 Here's an example of how to select both the name of the employee and their manager:
 
-{% code title="controllers/employees.cfc" %}
+{% code title="app/controllers/employees.cfc" %}
 ```javascript
 component extends="Controller" {
  function index() {
 
-   employees= model("employee").findAll(include="manager", select="employees.name, managers.name AS managerName");
+   employees= application.wo.model("employee").findAll(include="manager", select="employees.name, managers.name AS managerName");
 
  }
 }
@@ -161,7 +161,7 @@ component extends="Controller" {
 {% hint style="info" %}
 #### Know Your Joins
 
-Because the default `joinType` for `belongsTo()` is `inner`, employees without a manager assigned to them will not be returned in the `findAll()` call above. To return all rows you can set `jointype` to `outer`instead.
+Because the default `joinType` for `belongsTo()` is `inner`, employees without a manager assigned to them will not be returned in the `findAll()` call above. To return all rows you can set `jointype` to `outer` instead.
 {% endhint %}
 
 ### Database Table Setup
@@ -174,11 +174,11 @@ In this case, the convention is to use the singular name of the related table wi
 
 Wheels offers a way to configure your models to break this naming convention, however. This is done by using the `foreignKey` argument in your models' `belongsTo()` calls.
 
-Let's pretend that you have a relationship between`author` and `post`, but you didn't use the naming convention and instead called the column `author_id`. (You just can't seem to let go of the underscores, can you?)
+Let's pretend that you have a relationship between `author` and `post`, but you didn't use the naming convention and instead called the column `author_id`. (You just can't seem to let go of the underscores, can you?)
 
 Your post's `config()` method would then need to look like this:
 
-{% code title="models/post.cfc" %}
+{% code title="app/models/post.cfc" %}
 ```javascript
 component extends="Model" {
 
@@ -204,12 +204,12 @@ To join data from related tables in our [findAll()](https://api.cfwheels.org/mod
 
 Here's what that call would look like:
 
-{% code title="controllers/posts.cfc" %}
+{% code title="app/controllers/posts.cfc" %}
 ```javascript
 component extends="Controller" {
  function index() {
 
-   posts = model("post").findAll(include="author");
+   posts = application.wo.model("post").findAll(include="author");
 
  }
 }
@@ -220,12 +220,12 @@ It's that simple. Wheels will then join the `authors` table automatically so tha
 
 Note that if you switch the above statement around like this:
 
-{% code title="controllers/authors.cfc" %}
+{% code title="app/controllers/authors.cfc" %}
 ```javascript
 component extends="Controller" {
  function index() {
 
-  authors = model("author").findAll(include="posts");
+  authors = application.wo.model("author").findAll(include="posts");
 
  }
 }
@@ -236,14 +236,14 @@ Then you would need to specify "post" in its plural form, "posts." If you're thi
 
 If you look at the two examples above, you'll see that in example #1, you're asking for all posts including each post's **author** (hence the singular "author"). In example #2, you're asking for all authors and all of the **posts** written by each author (hence the plural "posts").
 
-You're not limited to specifying just one association in the `include` argument. You can for example return data for `authors, posts`, and `bios` in one call like this:
+You're not limited to specifying just one association in the `include` argument. You can for example return data for `authors`, `posts`, and `bios` in one call like this:
 
-{% code title="controllers/authors.cfc" %}
+{% code title="app/controllers/authors.cfc" %}
 ```javascript
 component extends="Controller" {
  function index() {
 
-   authorsPostsAndComments =    model("author").findAll(include="posts,bio");
+   authorsPostsAndComments =    application.wo.model("author").findAll(include="posts,bio");
 
  }
 }
@@ -256,12 +256,12 @@ To include several tables, simply delimit the names of the models with a comma. 
 
 When you need to include tables more than one step away in a chain of joins, you will need to start using parenthesis. Look at the following example:
 
-{% code title="controllers/comments.cfc" %}
+{% code title="app/controllers/comments.cfc" %}
 ```javascript
 component extends="Controller" {
  function index() {
 
-   commentsPostsAndAuthors = model("comment").findAll(include="post(author)");
+   commentsPostsAndAuthors = application.wo.model("comment").findAll(include="post(author)");
 
  }
 }
@@ -278,12 +278,12 @@ In order to include both columns, you can override this behavior with the `selec
 
 For example, if we had a column named `name` in both your `posts` and `authors` tables, then you could use the `select` argument like so:
 
-{% code title="controllers/posts.cfc" %}
+{% code title="app/controllers/posts.cfc" %}
 ```javascript
 component extends="Controller" {
  function index() {
 
-   posts = model("post").findAll(
+   posts = application.wo.model("post").findAll(
     select="posts.name, authors.id, authors.post_id, authors.name AS authorname",
     include="author"
 );
@@ -317,19 +317,19 @@ Given that you have told Wheels that a `post` _has many_ `comments` through a [h
 
 Replace `XXX` below with the name of the associated model (i.e. `comments` in the case of the example that we're using here).
 
-| Method         | Example                     | Description                                                                                                                                                                           |
-| -------------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| XXX()          | post.comments()             | Returns all comments where the foreign key matches the post's primary key value. Similar to calling `model("comment").findAll(where="postid=#post.id#")`.                             |
-| addXXX()       | post.addComment(comment)    | Adds a comment to the post association by setting its foreign key to the post's primary key value. Similar to calling `model("comment").updateByKey(key=comment.id, postid=post.id)`. |
-| removeXXX()    | post.removeComment(comment) | Removes a comment from the post association by setting its foreign key value to `NULL`. Similar to calling `model("comment").updateByKey(key=comment.id, postid="")`.                 |
-| deleteXXX()    | post.deleteComment(comment) | Deletes the associated comment from the database table. Similar to calling `model("comment").deleteByKey(key=comment.id)`.                                                            |
-| removeAllXXX() | post.removeAllComments()    | Removes all comments from the post association by setting their foreign key values to `NULL`. Similar to calling `model("comment").updateAll(postid="", where="postid=#post.id#")`.   |
-| deleteAllXXX() | post.deleteAllComments()    | Deletes the associated comments from the database table. Similar to calling `model("comment").deleteAll(where="postid=#post.id#")`.                                                   |
-| XXXCount()     | post.commentCount()         | Returns the number of associated comments. Similar to calling `model("comment").count(where="postid=#post.id#")`.                                                                     |
-| newXXX()       | post.newComment()           | Creates a new comment object. Similar to calling `model("comment").new(postid=post.id)`.                                                                                              |
-| createXXX()    | post.createComment()        | Creates a new comment object and saves it to the database. Similar to calling `model("comment").create(postid=post.id)`.                                                              |
-| hasXXX()       | post.hasComments()          | Returns true if the post has any comments associated with it. Similar to calling `model("comment").exists(where="postid=#post.id#")`.                                                 |
-| findOneXXX()   | post.findOneComment()       | Returns one of the associated comments. Similar to calling `model("comment").findOne(where="postid=#post.id#")`.                                                                      |
+| Method         | Example                     | Description                                                                                                                                                                                          |
+| -------------- | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| XXX()          | post.comments()             | Returns all comments where the foreign key matches the post's primary key value. Similar to calling `application.wo.model("comment").findAll(where="postid=#post.id#")`.                             |
+| addXXX()       | post.addComment(comment)    | Adds a comment to the post association by setting its foreign key to the post's primary key value. Similar to calling `application.wo.model("comment").updateByKey(key=comment.id, postid=post.id)`. |
+| removeXXX()    | post.removeComment(comment) | Removes a comment from the post association by setting its foreign key value to `NULL`. Similar to calling `application.wo.model("comment").updateByKey(key=comment.id, postid="")`.                 |
+| deleteXXX()    | post.deleteComment(comment) | Deletes the associated comment from the database table. Similar to calling `application.wo.model("comment").deleteByKey(key=comment.id)`.                                                            |
+| removeAllXXX() | post.removeAllComments()    | Removes all comments from the post association by setting their foreign key values to `NULL`. Similar to calling `application.wo.model("comment").updateAll(postid="", where="postid=#post.id#")`.   |
+| deleteAllXXX() | post.deleteAllComments()    | Deletes the associated comments from the database table. Similar to calling `application.wo.model("comment").deleteAll(where="postid=#post.id#")`.                                                   |
+| XXXCount()     | post.commentCount()         | Returns the number of associated comments. Similar to calling `application.wo.model("comment").count(where="postid=#post.id#")`.                                                                     |
+| newXXX()       | post.newComment()           | Creates a new comment object. Similar to calling `application.wo.model("comment").new(postid=post.id)`.                                                                                              |
+| createXXX()    | post.createComment()        | Creates a new comment object and saves it to the database. Similar to calling `application.wo.model("comment").create(postid=post.id)`.                                                              |
+| hasXXX()       | post.hasComments()          | Returns true if the post has any comments associated with it. Similar to calling `application.wo.model("comment").exists(where="postid=#post.id#")`.                                                 |
+| findOneXXX()   | post.findOneComment()       | Returns one of the associated comments. Similar to calling `application.wo.model("comment").findOne(where="postid=#post.id#")`.                                                                      |
 
 **Methods Added by hasOne**
 
@@ -337,15 +337,15 @@ The [hasOne()](https://api.cfwheels.org/model.hasone.html) association adds a fe
 
 Given that you have told Wheels that an `author` _has one_ `profile` through a [hasOne()](https://api.cfwheels.org/model.hasone.html) call, here are the methods that will be made available to you on the `author` model.
 
-| Method      | Example                    | Description                                                                                                                                                                                                                                                                                               |
-| ----------- | -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| XXX()       | author.profile()           | Returns the profile where the foreign key matches the author's primary key value. Similar to calling model("profile").findOne(where="authorid=#author.id#").                                                                                                                                              |
-| setXXX()    | author.setProfile(profile) | Sets the profile to be associated with the author by setting its foreign key to the author's primary key value. You can pass in either a profile object or the primary key value of a profile object to this method. Similar to calling model("profile").updateByKey(key=profile.id, authorid=author.id). |
-| removeXXX() | author.removeProfile()     | Removes the profile from the author association by setting its foreign key to NULL. Similar to calling model("profile").updateOne(where="authorid=#author.id#", authorid="").                                                                                                                             |
-| deleteXXX() | author.deleteProfile()     | Deletes the associated profile from the database table. Similar to calling model("profile").deleteOne(where="authorid=#author.id#")                                                                                                                                                                       |
-| newXXX()    | author.newProfile()        | Creates a new profile object. Similar to calling model("profile").new(authorid=author.id).                                                                                                                                                                                                                |
-| createXXX() | author.createProfile()     | Creates a new profile object and saves it to the database. Similar to calling model("profile").create(authorid=author.id).                                                                                                                                                                                |
-| hasXXX()    | author.hasProfile()        | Returns true if the author has an associated profile. Similar to calling model("profile").exists(where="authorid=#author.id#").                                                                                                                                                                           |
+| Method      | Example                    | Description                                                                                                                                                                                                                                                                                                              |
+| ----------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| XXX()       | author.profile()           | Returns the profile where the foreign key matches the author's primary key value. Similar to calling application.wo.model("profile").findOne(where="authorid=#author.id#").                                                                                                                                              |
+| setXXX()    | author.setProfile(profile) | Sets the profile to be associated with the author by setting its foreign key to the author's primary key value. You can pass in either a profile object or the primary key value of a profile object to this method. Similar to calling application.wo.model("profile").updateByKey(key=profile.id, authorid=author.id). |
+| removeXXX() | author.removeProfile()     | Removes the profile from the author association by setting its foreign key to NULL. Similar to calling application.wo.model("profile").updateOne(where="authorid=#author.id#", authorid="").                                                                                                                             |
+| deleteXXX() | author.deleteProfile()     | Deletes the associated profile from the database table. Similar to calling application.wo.model("profile").deleteOne(where="authorid=#author.id#")                                                                                                                                                                       |
+| newXXX()    | author.newProfile()        | Creates a new profile object. Similar to calling application.wo.model("profile").new(authorid=author.id).                                                                                                                                                                                                                |
+| createXXX() | author.createProfile()     | Creates a new profile object and saves it to the database. Similar to calling application.wo.model("profile").create(authorid=author.id).                                                                                                                                                                                |
+| hasXXX()    | author.hasProfile()        | Returns true if the author has an associated profile. Similar to calling application.wo.model("profile").exists(where="authorid=#author.id#").                                                                                                                                                                           |
 
 **Methods Added by belongsTo**
 
@@ -355,8 +355,8 @@ Given that you have told Wheels that a `comment` belongs to a `post` through a [
 
 | Method   | Example           | Description                                                                                                                                 |
 | -------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| XXX()    | comment.post()    | Returns the post where the primary key matches the comment's foreign key value. Similar to calling model("post").findByKey(comment.postid). |
-| hasXXX() | comment.hasPost() | Returns true if the comment has a post associated with it. Similar to calling model("post").exists(comment.postid).                         |
+| XXX()    | comment.post()    | Returns the post where the primary key matches the comment's foreign key value. Similar to calling application.wo.model("post").findByKey(comment.postid). |
+| hasXXX() | comment.hasPost() | Returns true if the comment has a post associated with it. Similar to calling application.wo.model("post").exists(comment.postid).                         |
 
 One general rule for all of the methods above is that you can always supply any argument that is accepted by the method that the processing is delegated to. This means that you can, for example, call `post.comments(order="createdAt DESC")`, and the `order` argument will be passed along to `findAll()`.
 
@@ -387,7 +387,7 @@ Let's say that we wanted to set up a relationship between `customers` and `publi
 
 Here are the representative models:
 
-{% code title="models/Customer.cfc" %}
+{% code title="app/models/Customer.cfc" %}
 ```javascript
 component extends="Model" {
 
@@ -399,7 +399,7 @@ component extends="Model" {
 ```
 {% endcode %}
 
-{% code title="models/Publication.cfc" %}
+{% code title="app/models/Publication.cfc" %}
 ```javascript
 component extends="Model" {
 
@@ -411,7 +411,7 @@ component extends="Model" {
 ```
 {% endcode %}
 
-{% code title="models/Subscription.cfc" %}
+{% code title="app/models/Subscription.cfc" %}
 ```javascript
 component extends="Model" {
 
@@ -432,12 +432,12 @@ At this point, it's still fairly easy to get data from the many-to-many associat
 
 We can include the related tables from the `subscription` bridge entity to get the same effect:
 
-{% code title="controllers/subscriptions.cfc" %}
+{% code title="app/controllers/subscriptions.cfc" %}
 ```javascript
 component extends="Controller" {
  function index() {
 
-   subscriptions= model("subscription").findAll(include="customer,publication");
+   subscriptions= application.wo.model("subscription").findAll(include="customer,publication");
 
  }
 }
@@ -450,7 +450,7 @@ With the `shortcut` argument to [hasMany()](https://api.cfwheels.org/model.hasma
 
 For our example above, you can alter the [hasMany()](https://api.cfwheels.org/model.hasmany.html) call on the `customer` model to look like this instead:
 
-{% code title="models/customer.cfc" %}
+{% code title="app/models/customer.cfc" %}
 ```javascript
 component extends="Model" {
 
@@ -463,12 +463,12 @@ component extends="Model" {
 
 Now you can get a customer's publications directly by using code like this:
 
-{% code title="controllers/customers.cfc" %}
+{% code title="app/controllers/customers.cfc" %}
 ```javascript
 component extends="Controller" {
  function edit() {
 
-   customer= model("customer").findByKey(params.key);
+   customer= application.wo.model("customer").findByKey(params.key);
    publications= customer.publications();
 
  }
