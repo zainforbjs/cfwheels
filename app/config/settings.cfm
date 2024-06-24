@@ -1,13 +1,16 @@
 <cfscript>
 	/*
 		Use this file to configure your application.
-		You can also use the environment specific files (e.g. /config/production/settings.cfm) to override settings set here.
+		You can also use the environment specific files (e.g. app/config/production/settings.cfm) to override settings set here.
 		Don't forget to issue a reload request (e.g. reload=true) after making changes.
-		See http://docs.cfwheels.org/docs/configuration-and-defaults for more info.
+		See https://guides.cfwheels.org/2.5.0/v/3.0.0-snapshot/working-with-cfwheels/configuration-and-defaults for more info.
 	*/
 
 	/*
-		If you leave these settings commented out, CFWheels will set the data source name to the same name as the folder the application resides in.
+		You can change the "wheels.fw" value from the two functions below to set your datasource.
+		You can change the the value for the "dataSourceName" to set a default datasource to be used throughout your application.
+		You can also change the value for the "coreTestDataSourceName" to set your testing datasource.
+		You can also uncomment the 2 "set" functions below them to set the username and password for the datasource.
 	*/
 	set(coreTestDataSourceName="wheels.fw");
 	set(dataSourceName="wheels.fw");

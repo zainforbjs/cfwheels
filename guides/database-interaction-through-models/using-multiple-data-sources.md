@@ -32,7 +32,7 @@ One thing to keep in mind when using multiple data sources with Wheels is that i
 
 Let's say you have the following models set up:
 
-{% code title="models/Photo.cfc" %}
+{% code title="app/models/Photo.cfc" %}
 ```javascript
 component extends="Model" {
   
@@ -45,7 +45,7 @@ component extends="Model" {
 ```
 {% endcode %}
 
-{% code title="models/PhotoGallery.cfc" %}
+{% code title="app/models/PhotoGallery.cfc" %}
 ```javascript
 component extends="Model" {
   
@@ -61,6 +61,6 @@ Because the `photo` model is the main model being used in the following example,
 
 {% code title="FindAll Call" %}
 ```javascript
-myPhotos = model("photo").findAll(include="photoGalleries");
+myPhotos = application.wo.model("photo").findAll(include="photoGalleries");
 ```
 {% endcode %}

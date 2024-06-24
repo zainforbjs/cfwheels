@@ -25,7 +25,7 @@ component extends="Model" {
   }
   
   function createFirstPost(){
-    var post = model("post").new(
+    var post = application.wo.model("post").new(
         authorId=this.id,
         text="This is my first post!";
         post.save();
@@ -41,30 +41,30 @@ In this example, if the post doesn't save (perhaps due to a validation problem),
 If you want to manage transactions yourself using the `<cftransaction>` tag, you can simply add `transaction=false`to any CRUD method.
 
 ```javascript
-model("author").create(name="John", transaction=false);
+application.wo.model("author").create(name="John", transaction=false);
 ```
 
 Another option is to disable transactions across your entire application using the `transactionMode` configuration:
 
-{% code title="config/settings.cfm" %}
+{% code title="app/config/settings.cfm" %}
 ```javascript
 set(transactionMode=false);
 ```
 {% endcode %}
 
-See the chapter about [Configuration and Defaults](https://guides.cfwheels.org/cfwheels-guides/working-with-cfwheels/configuration-and-defaults) for more details.
+See the chapter about [Configuration and Defaults](https://guides.cfwheels.org/2.5.0/v/3.0.0-snapshot/working-with-cfwheels/configuration-and-defaults) for more details.
 
 ### Using Rollbacks
 
 Sometimes it's useful to use a rollback to test a process without making any permanent changes to the database. To do this, add `transaction="rollback"` to any CRUD method.
 
 ```javascript
-model("author").create(name="John", transaction="rollback");
+application.wo.model("author").create(name="John", transaction="rollback");
 ```
 
 Again, to configure your entire application to rollback _all_ transactions, you can set the `transactionMode` configuration to `rollback`.
 
-{% code title="config/settings.cfm" %}
+{% code title="app/config/settings.cfm" %}
 ```javascript
 set(transactionMode="rollback");
 ```

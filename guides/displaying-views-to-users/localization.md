@@ -10,12 +10,12 @@ This chapter is still being constructed...
 
 Generally speaking, if you try and add Unicode characters such as umlauts into templates, you may well come across display issues. This is easily fixable, but requires one of the following:
 
-* For the template cfm file to be saved in the correct encoding for the language being displayed
+* For the template.cfm file to be saved in the correct encoding for the language being displayed
 * Or use of the `cfprocessingdirective` tag to set `pageEncoding`
 
 ### Using cfprocessingdirective
 
-{% code title="/views/main/example.cfm" %}
+{% code title="/app/views/main/example.cfm" %}
 ```html
 <h1>Über uns</h1>
 ```
@@ -25,7 +25,7 @@ Generally speaking, if you try and add Unicode characters such as umlauts into t
 
 Incorrect encoding example
 
-{% code title="/views/main/example.cfm" %}
+{% code title="/app/views/main/example.cfm" %}
 ```html
 <cfprocessingdirective pageEncoding="utf-8">
 <h1>Über uns</h1>
@@ -36,9 +36,9 @@ Incorrect encoding example
 
 Correct encoding
 
-Likewise, umlauts in routes would need for the `config/routes.cfm` file to have the correct encoding:
+Likewise, umlauts in routes would need for the `app/config/routes.cfm` file to have the correct encoding:
 
-{% code title="config/routes.cfm" %}
+{% code title="app/config/routes.cfm" %}
 ```html
 <cfprocessingdirective pageEncoding="utf-8">
 <cfscript>

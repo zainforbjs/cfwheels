@@ -28,7 +28,7 @@ The server will then start on a random port on `127.0.0.1` and will create a `se
 }
 ```
 
-In this example, I've set the server name to `myApp`, meaning I can now start the server from any directory by simply calling `start myApp`. I've also specified a specific port, `60000`, but you can specify any port you want, or just remove that to start on a random port each time. Lastly, I've enabled URL rewriting, and pointing the URL rewrite configuration file to the `urlrewrite.xml` which is included in CFWheels 2.x. (If you've used the `wheels new` command to create your app, this will already be done for you).
+In this example, I've set the server name to `myApp`, meaning I can now start the server from any directory by simply calling `start myApp`. I've also specified a specific port, `60000`, but you can specify any port you want, or just remove that to start on a random port each time. Lastly, I've enabled URL rewriting and pointed the URL rewrite configuration file to `urlrewrite.xml`, which is included starting from CFWheels 2.x. (If you've used the `wheels new` command to create your app, this will already be done for you).
 
 #### Using custom host names
 
@@ -84,7 +84,7 @@ To remove a server configuration from the list, you can use `server forget myapp
 
 ### Specifying different CF engines
 
-By default, CommandBox will run Lucee (version 5.x at time of writing). You may wish to specify an exact version of Lucee, or use Adobe ColdFusion. We can do this via either setting the appropriate `cfengine` setting in `server.json`, or at runtime with the `cfengine=` argument.
+By default, CommandBox will run Lucee (version 6.x at time of writing). You may wish to specify an exact version of Lucee, or use Adobe ColdFusion. We can do this via either setting the appropriate `cfengine` setting in `server.json`, or at runtime with the `cfengine=` argument.
 
 {% tabs %}
 {% tab title="CommandBox" %}
@@ -135,7 +135,7 @@ Or via `server.json`
         }
     },
     "app":{
-        "cfengine":"adobe@2016"
+        "cfengine":"adobe@2018"
     },
 }
 ```
@@ -146,7 +146,7 @@ Or via `server.json`
 The default username and password for all administrators is `admin` & `commandbox`
 {% endhint %}
 
-You can of course run multiple servers, so if you need to test your app on Lucee 4.x, Lucee 5.x and Adobe 2016, you can just start three servers with different `cfengine=` arguments!
+You can of course run multiple servers, so if you need to test your app on Lucee 5.x, Lucee 6.x and Adobe 2018, you can just start three servers with different `cfengine=` arguments!
 
 {% hint style="info" %}
 #### Watch out
