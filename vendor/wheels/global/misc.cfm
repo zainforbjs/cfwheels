@@ -240,7 +240,7 @@ public void function addFormat(required string extension, required string mimeTy
 }
 
 /**
- * Returns the mapper object used to configure your application's routes. Usually you will use this method in `config/routes.cfm` to start chaining route mapping methods like `resources`, `namespace`, etc.
+ * Returns the mapper object used to configure your application's routes. Usually you will use this method in `app/config/routes.cfm` to start chaining route mapping methods like `resources`, `namespace`, etc.
  *
  * [section: Configuration]
  * [category: Routing]
@@ -578,7 +578,7 @@ public string function pluginNames() {
  * [section: Global Helpers]
  * [category: Miscellaneous Functions]
  *
- * @route Name of a route that you have configured in `config/routes.cfm`.
+ * @route Name of a route that you have configured in `app/config/routes.cfm`.
  * @controller Name of the controller to include in the URL.
  * @action Name of the action to include in the URL.
  * @key Key(s) to include in the URL.
