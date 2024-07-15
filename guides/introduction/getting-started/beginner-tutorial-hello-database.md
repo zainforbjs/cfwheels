@@ -22,7 +22,7 @@ You can download all the source code for this sample application from [https://g
 
 By default, CFWheels will connect to a data source `wheels.fw`. To change this default behavior, open the file at `app/config/settings.cfm`. In a fresh install of CFWheels, you'll see the follwing code:
 
-{% code title="config/settings.cfm" %}
+{% code title="app/config/settings.cfm" %}
 ```html
 <cfscript>
 	/*
@@ -263,7 +263,7 @@ Next, we'll code the `create` action in the controller to handle the form submis
 
 A basic way of doing this is using the model object's [create()](https://api.cfwheels.org/model.create.html) method:
 
-{% code title="controllers/Users.cfc" %}
+{% code title="app/controllers/Users.cfc" %}
 ```javascript
 function create() {
     user = application.wo.model("user").create(params.user);

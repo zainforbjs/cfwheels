@@ -139,11 +139,11 @@ Create a user object with just "index" and "customaction" methods
 wheels generate controller user index,customaction
 ```
 
-| Parameter  | Required | Default | Description                                                        |
-| ---------- | -------- | ------- | ------------------------------------------------------------------ |
-| name       | true     |         | Name of the controller to create without the .cfc                  |
-| actionList | false    |         | optional list of actions, comma delimited                          |
-| directory  | false    |         | if for some reason you don't have your controllers in controllers/ |
+| Parameter  | Required | Default | Description                                                            |
+| ---------- | -------- | ------- | ---------------------------------------------------------------------- |
+| name       | true     |         | Name of the controller to create without the .cfc                      |
+| actionList | false    |         | optional list of actions, comma delimited                              |
+| directory  | false    |         | if for some reason you don't have your controllers in app/controllers/ |
 
 ## `wheels generate model`
 

@@ -517,7 +517,7 @@ Here's an example of how you might use each option:
 // Query generated in your controller --->
 departments = findAll(orderBy="name");
 
-// Hard-coded struct set up in events/onapplicationstart.cfm
+// Hard-coded struct set up in app/events/onapplicationstart.cfm
 application.departments["1"] = "Sales";
 application.departments["2"] = "Marketing";
 application.departments["3"] = "Information Technology";

@@ -142,7 +142,7 @@ public string function createMigration(
  * [section: Migrator]
  * [category: General Functions]
  *
- * @path Path to Migration Files: defaults to /migrator/migrations/
+ * @path Path to Migration Files: defaults to /app/migrator/migrations/
  */
 public array function getAvailableMigrations(string path = this.paths.migrate) {
 	local.rv = [];

@@ -38,7 +38,7 @@ In CFML's standard `Application.cfc`, you can normally set values for your appli
 
 Here is an example of what can go in `app/config/app.cfm`:
 
-{% code title="config/app.cfm" %}
+{% code title="app/config/app.cfm" %}
 ```javascript
 this.name = "TheNextSiteToBeatTwitter";
 this.sessionManagement = false;
@@ -85,13 +85,13 @@ set(environment="development");
 
 **Full Listing of Environment Settings**
 
-| Name                         | Type    | Default                               | Description                                                                                                                                                                                                                              |
-| ---------------------------- | ------- | ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Name                         | Type    | Default                               | Description                                                                                                                                                                                                                                  |
+| ---------------------------- | ------- | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | environment                  | string  | development                           | Environment to load. Set this value in app/config/environment.cfm. Valid values are development, testing, maintenance, and production.                                                                                                       |
-| reloadPassword               | string  | \[empty string]                       | Password to require when reloading the CFWheels application from the URL. Leave empty to require no password.                                                                                                                            |
-| redirectAfterReload          | boolean | Enabled in maintenance and production | Whether or not to redirect away from the current URL when it includes a reload request. This hinders accidentally exposing your application's reload URL and password in web analytics software, screenshots of the browser, etc.        |
-| ipExceptions                 | string  | \[empty string]                       | IP addresses that CFWheels will ignore when the environment is set to maintenance. That way administrators can test the site while in maintenance mode, while the rest of users will see the message loaded in events/onmaintenance.cfm. |
-| allowEnvironmentSwitchViaUrl | boolean | true                                  | Set to false to disable switching of environment configurations via URL. You can still reload the application, but switching environments themselves will be disabled.                                                                   |
+| reloadPassword               | string  | \[empty string]                       | Password to require when reloading the CFWheels application from the URL. Leave empty to require no password.                                                                                                                                |
+| redirectAfterReload          | boolean | Enabled in maintenance and production | Whether or not to redirect away from the current URL when it includes a reload request. This hinders accidentally exposing your application's reload URL and password in web analytics software, screenshots of the browser, etc.            |
+| ipExceptions                 | string  | \[empty string]                       | IP addresses that CFWheels will ignore when the environment is set to maintenance. That way administrators can test the site while in maintenance mode, while the rest of users will see the message loaded in app/events/onmaintenance.cfm. |
+| allowEnvironmentSwitchViaUrl | boolean | true                                  | Set to false to disable switching of environment configurations via URL. You can still reload the application, but switching environments themselves will be disabled.                                                                       |
 
 ### URL Rewriting Settings
 
@@ -152,15 +152,15 @@ set(showDebugInformation=false);
 
 **Full Listing of Debugging and Error Settings**
 
-| Name                  | Type    | Default                                                                  | Description                                                                                                                                                                     |
-| --------------------- | ------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| errorEmailServer      | string  | \[empty string]                                                          | Server to use to send out error emails. When left blank, this defaults to settings in the ColdFusion Administrator (if set).                                                    |
-| errorEmailAddress     | string  | \[empty string]                                                          | Comma-delimited list of email address to send error notifications to. Only applies if sendEmailOnError is set to true.                                                          |
-| errorEmailSubject     | string  | Error                                                                    | Subject of email that gets sent to administrators on errors. Only applies if sendEmailOnError is set to true.                                                                   |
-| excludeFromErrorEmail | string  | \[empty string]                                                          | List of variables (or entire scopes) to exclude from the scope dumps included in error emails. Use this to keep sensitive information from being sent in plain text over email. |
-| sendEmailOnError      | boolean | Enabled in production environments that have a TLD like .com, .org, etc. | When set to true, CFWheels will send an email to administrators whenever CFWheels throws an error.                                                                              |
-| showDebugInformation  | boolean | Enabled in development mode.                                             | When set to true, CFWheels will show debugging information in the footers of your pages.                                                                                        |
-| showErrorInformation  | boolean | Enabled in development, maintenance, and testing mode.                   | When set to false, CFWheels will run and display code stored at events/onerror.cfm instead of revealing CFML errors.                                                            |
+| Name                  | Type    | Default                                                                  | Description                                                                                                                                                                         |
+| --------------------- | ------- | ------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| errorEmailServer      | string  | \[empty string]                                                          | Server to use to send out error emails. When left blank, this defaults to settings in the ColdFusion Administrator (if set).                                                        |
+| errorEmailAddress     | string  | \[empty string]                                                          | Comma-delimited list of email address to send error notifications to. Only applies if sendEmailOnError is set to true.                                                              |
+| errorEmailSubject     | string  | Error                                                                    | Subject of email that gets sent to administrators on errors. Only applies if sendEmailOnError is set to true.                                                                       |
+| excludeFromErrorEmail | string  | \[empty string]                                                          | List of variables (or entire scopes) to exclude from the scope dumps included in error emails. Use this to keep sensitive information from being sent in plain text over email.     |
+| sendEmailOnError      | boolean | Enabled in production environments that have a TLD like .com, .org, etc. | When set to true, CFWheels will send an email to administrators whenever CFWheels throws an error.                                                                                  |
+| showDebugInformation  | boolean | Enabled in development mode.                                             | When set to true, CFWheels will show debugging information in the footers of your pages.                                                                                            |
+| showErrorInformation  | boolean | Enabled in development, maintenance, and testing mode.                   | When set to false, CFWheels will run and display code stored at app/events/onerror.cfm instead of revealing CFML errors.                                                            |
 
 For more information, refer to the chapter about [Switching Environments](switching-environments.md).
 

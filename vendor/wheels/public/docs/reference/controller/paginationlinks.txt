@@ -46,7 +46,7 @@ authors = model("author").findAll(handle="authQuery", page=5, order="id");
 //--------------------------------------------------------------------
 // Example 4: Call to `paginationLinks` using routes
 
-// Route setup in config/routes.cfm
+// Route setup in app/config/routes.cfm
 mapper()
     .get(name="paginatedCommentListing", pattern="blog/[year]/[month]/[day]/[page]", to="blogs##stats")
     .get(name="commentListing", pattern="blog/[year]/[month]/[day]", to="blogs##stats")

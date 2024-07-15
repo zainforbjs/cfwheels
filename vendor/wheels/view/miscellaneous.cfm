@@ -388,7 +388,7 @@ public string function $tag(
 	/* To fix the bug below:
 	   https://github.com/cfwheels/cfwheels/issues/1115
 
-	   Checked if "addClass" attribute is present then add that attribute's value to class so that it does not overwrite the default class value present in config/settings.cfm
+	   Checked if "addClass" attribute is present then add that attribute's value to class so that it does not overwrite the default class value present in app/config/settings.cfm
 	*/
 	if(structKeyExists(arguments.attributes, 'addClass')) {
 		if(structKeyExists(arguments.attributes, 'class')) {
