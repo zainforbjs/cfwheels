@@ -166,7 +166,7 @@ public struct function root(string to, boolean mapFormat) {
 		local.pattern = "/";
 	}
 
-  // If arguments.to is not passed in, we check for the existance of views/home/index.cfm if found we set that as the root
+  // If arguments.to is not passed in, we check for the existance of app/views/home/index.cfm if found we set that as the root
   // else we set wheels##wheels as the root.
   if (!structKeyExists(arguments, "to")) {
     if (fileExists(application.AppDir & "views/home/index.cfm")) {

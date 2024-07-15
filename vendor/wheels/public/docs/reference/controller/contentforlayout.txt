@@ -1,2 +1,2 @@
-<!--- In `views/layout.cfm` --->
+<!--- In `app/views/layout.cfm` --->
 #contentForLayout()#

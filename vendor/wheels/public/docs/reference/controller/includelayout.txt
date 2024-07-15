@@ -8,5 +8,5 @@
 </cfsavecontent>
 contentFor(sidebar=categoriesSidebar);
 
-<!---Include parent layout at `views/layout.cfm`--->
+<!---Include parent layout at `app/views/layout.cfm`--->
 #includeLayout("/layout.cfm")#

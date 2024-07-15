@@ -346,7 +346,7 @@ component extends="testbox.system.BaseSpec" {
 				now = Now()
 				args = {}
 				args.includeSeconds = true
-				args.toTime = now
+				args.fromTime = now
 			})
 
 			it("works with seconds below 5 secondss", () => {

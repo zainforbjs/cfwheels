@@ -450,7 +450,7 @@ public struct function $findRoute() {
 		$throwErrorOrShow404Page(
 			type = "Wheels.RouteNotFound",
 			message = "Could not find the `#arguments.route#` route.",
-			extendedInfo = "Make sure there is a route configured in your `config/routes.cfm` file named `#arguments.route#`."
+			extendedInfo = "Make sure there is a route configured in your `app/config/routes.cfm` file named `#arguments.route#`."
 		);
 	}
 	local.routePos = application.wheels.namedRoutePositions[arguments.route];

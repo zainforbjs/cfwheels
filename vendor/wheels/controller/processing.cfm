@@ -145,7 +145,7 @@ public void function $callAction(required string action) {
 				$throwErrorOrShow404Page(
 					type = "Wheels.ViewNotFound",
 					message = "Could not find the view page for the `#arguments.action#` action in the `#variables.$class.name#` controller.",
-					extendedInfo = "Create a file named `#LCase(arguments.action)#.cfm` in the `views/#LCase(ListChangeDelims(variables.$class.name, '/', '.'))#` directory (create the directory as well if it doesn't already exist)."
+					extendedInfo = "Create a file named `#LCase(arguments.action)#.cfm` in the `app/views/#LCase(ListChangeDelims(variables.$class.name, '/', '.'))#` directory (create the directory as well if it doesn't already exist)."
 				);
 			}
 		}

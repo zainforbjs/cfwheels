@@ -63,7 +63,7 @@ public any function $initControllerObject(required string name, required struct 
 	variables.$instance = {};
 	variables.$instance.contentFor = {};
 
-	// Set file name to look for (e.g. "views/folder/helpers.cfm").
+	// Set file name to look for (e.g. "app/views/folder/helpers.cfm").
 	// Name could be dot notation so we need to change delimiters.
 	local.template = $get("viewPath") & "/" & LCase(ListChangeDelims(arguments.name, '/', '.')) & "/helpers.cfm";
 

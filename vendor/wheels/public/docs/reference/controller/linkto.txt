@@ -11,7 +11,7 @@
 #linkTo(text="View Settings", action="settings", params="show=all&amp;sort=asc")#
 <!--- Outputs: <a href="/account/settings?show=all&amp;amp;sort=asc">View Settings</a> --->
 
-<!--- Given that a `userProfile` route has been configured in `config/routes.cfm` --->
+<!--- Given that a `userProfile` route has been configured in `app/config/routes.cfm` --->
 #linkTo(text="Joe's Profile", route="userProfile", userName="joe")#
 <!--- Outputs: <a href="/user/joe">Joe's Profile</a> --->
 
