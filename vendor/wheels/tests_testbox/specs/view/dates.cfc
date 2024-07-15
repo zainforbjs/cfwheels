@@ -346,7 +346,7 @@ component extends="testbox.system.BaseSpec" {
 				now = Now()
 				args = {}
 				args.includeSeconds = true
-				args.toTime = now
+				args.fromTime = now
 			})
 
 			it("works with seconds below 5 secondss", () => {
@@ -410,7 +410,6 @@ component extends="testbox.system.BaseSpec" {
 				args.includeSeconds = false;
 				c = 45 - 1
 				args.toTime = DateAdd('n', c, now)
-				args.fromTime = now
 				e = _controller.timeUntilInWords(argumentCollection = args)
 
 				expect(e).toBe("44 minutes")
