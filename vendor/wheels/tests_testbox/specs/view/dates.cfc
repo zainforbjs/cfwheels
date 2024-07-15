@@ -410,6 +410,7 @@ component extends="testbox.system.BaseSpec" {
 				args.includeSeconds = false;
 				c = 45 - 1
 				args.toTime = DateAdd('n', c, now)
+				args.fromTime = now
 				e = _controller.timeUntilInWords(argumentCollection = args)
 
 				expect(e).toBe("44 minutes")
