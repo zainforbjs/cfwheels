@@ -1,7 +1,6 @@
-component output="false" {
+component output="false" extends="wheels.Global"{
 
 	include "/wheels/migrator/functions.cfm";
-	include "/wheels/global/functions.cfm";
 	include "/wheels/plugins/standalone/injection.cfm";
 
 }

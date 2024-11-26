@@ -45,7 +45,7 @@ public any function average(
 				parameterize = arguments.parameterize,
 				includeSoftDeletes = arguments.includeSoftDeletes
 			);
-			local.values = ListToArray(Evaluate("ValueList(local.values.#arguments.property#)"));
+			local.values = ListToArray(ValueList(local.values[arguments.property]));
 			local.rv = arguments.ifNull;
 			if (!ArrayIsEmpty(local.values)) {
 				if (arguments.distinct) {

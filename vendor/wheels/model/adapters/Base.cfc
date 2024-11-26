@@ -1,6 +1,5 @@
-component output=false {
+component output=false extends="wheels.Global"{
 
-	include "/wheels/global/functions.cfm";
 	include "cfquery.cfm";
 
 	/**

@@ -534,11 +534,11 @@ public string function findAllKeys(boolean quoted = "false", string delimiter = 
 	arguments.callbacks = false;
 	local.query = findAll(argumentCollection = arguments);
 	if (local.quoted) {
-		local.functionName = "QuotedValueList";
+		local.rv = QuotedValueList(local.query[arguments.select], local.delimiter);
 	} else {
-		local.functionName = "ValueList";
+		local.rv = ValueList(local.query[arguments.select], local.delimiter);
 	}
-	return Evaluate("#local.functionName#(local.query.#arguments.select#, '#local.delimiter#')");
+	return local.rv;
 }
 
 /**

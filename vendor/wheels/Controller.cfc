@@ -1,7 +1,6 @@
-component output="false" displayName="Controller" {
+component output="false" displayName="Controller" extends="wheels.Global"{
 
 	include "/wheels/controller/functions.cfm";
-	include "/wheels/global/functions.cfm";
 	include "/wheels/view/functions.cfm";
 	include "/wheels/plugins/standalone/injection.cfm";
 	if (

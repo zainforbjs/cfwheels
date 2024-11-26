@@ -121,6 +121,13 @@ public any function $createInstance(
 		useFilterLists = !arguments.persisted
 	);
 
+	/**
+	 *	Wirebox adjustment
+	 */
+	if (isStruct(local.rv) && StructKeyExists(local.rv, '$wbMixer')){
+		structDelete(local.rv, '$wbMixer');
+	}
+
 	// If the object should be persisted, run afterFind callback, otherwise run afterNew callback.
 	// Then proceed to afterInitialization callback unless the previous callback method returned false.
 	local.afterFindResult = arguments.persisted && local.rv.$callback("afterFind", arguments.callbacks);

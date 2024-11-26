@@ -880,15 +880,14 @@
 		 * Internal function.
 		 */
 		public any function $createObjectFromRoot(required string path, required string fileName, required string method) {
-			local.returnVariable = "local.rv";
 			local.method = arguments.method;
 			local.component = ListChangeDelims(arguments.path, ".", "/") & "." & ListChangeDelims(arguments.fileName, ".", "/");
 			local.argumentCollection = arguments;
 			if(local.method EQ 'init'){
-				evaluate('#local.returnVariable# = application.wirebox.getInstance(name = "#local.component#", initArguments = local.argumentCollection)')
+				local.rv = application.wirebox.getInstance(name = "#local.component#", initArguments = local.argumentCollection);
 			}
 			else{
-				evaluate('#local.returnVariable# = application.wirebox.getInstance(name = "#local.component#").#local.method#(argumentCollection = local.argumentCollection)')
+				local.rv = application.wirebox.getInstance(name = "#local.component#")[local.method](argumentCollection = local.argumentCollection);
 			}
 			return local.rv;
 		}
@@ -2644,3 +2643,4 @@
 		include "/app/global/functions.cfm";
 	</cfscript>
 </cfcomponent>
+

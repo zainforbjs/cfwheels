@@ -1,7 +1,4 @@
 <cfscript>
-if (!StructKeyExists(variables, "$wddx")) {
-	include "/wheels/global/functions.cfm";
-}
 
 /**
  * Used internally by Migrator to provide feedback to the GUI and CLI about completed DB operations

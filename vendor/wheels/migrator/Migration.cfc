@@ -214,7 +214,7 @@ component extends="Base" {
 		} else {
 			arguments.columnNames = arguments.columnName;
 		}
-		Evaluate("t.#arguments.columnType#(argumentCollection=arguments)");
+		t[arguments.columnType](argumentCollection=arguments);
 		t.change(addColumns = arguments.addColumns);
 	}
 
