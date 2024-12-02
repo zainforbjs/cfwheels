@@ -1303,7 +1303,7 @@
 			application[local.appKey].PluginObj = $createObjectFromRoot(
 				path = "wheels",
 				fileName = "Plugins",
-				method = "init",
+				method = "$init",
 				pluginPath = local.pluginPath,
 				deletePluginDirectories = application[local.appKey].deletePluginDirectories,
 				overwritePlugins = application[local.appKey].overwritePlugins,

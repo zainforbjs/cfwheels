@@ -1,9 +1,12 @@
 component output="false" extends="wheels.Global"{
 
+	property name="Mixins" inject = "wheels.Plugins";
+
 	/**
 	 * Returns itself (the Dispatch object).
 	 */
 	public any function $init() {
+		Mixins.$initializeMixins(variables);
 		return this;
 	}
 
@@ -477,6 +480,5 @@ component output="false" extends="wheels.Global"{
 
 		return request.cgi.request_method;
 	}
-	include "/wheels/plugins/standalone/injection.cfm";
 
 }

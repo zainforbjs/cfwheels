@@ -1,6 +1,6 @@
 component output="false" extends="wheels.Global"{
 
-	public any function init(
+	public any function $init(
 		required string pluginPath,
 		boolean deletePluginDirectories = application.wheels.deletePluginDirectories,
 		boolean overwritePlugins = application.wheels.overwritePlugins,
@@ -240,7 +240,7 @@ component output="false" extends="wheels.Global"{
 	/**
    * Applies mixins to a component based on application configurations.
    */
-  public void function $initializeMixins() {
+  public any function $initializeMixins(required struct variablesScope) {
 		// We use $wheels here since these variables get placed in the variables scope of all objects.
 		// This way we sure they don't clash with other Wheels variables or any variables the developer may set.
 		if (IsDefined("application") && StructKeyExists(application, "$wheels")) {
@@ -250,32 +250,41 @@ component output="false" extends="wheels.Global"{
 		}
 
 		if (IsDefined("application") && !StructIsEmpty(application[$wheels.appKey].mixins)) {
-			$wheels.metaData = GetMetadata(this);
+			$wheels.metaData = GetMetadata(variablesScope.this);
 			if (StructKeyExists($wheels.metaData, "displayName")) {
 				$wheels.className = $wheels.metaData.displayName;
 			} else {
 				$wheels.className = Reverse(SpanExcluding(Reverse($wheels.metaData.name), "."));
 			}
 			if (StructKeyExists(application[$wheels.appKey].mixins, $wheels.className)) {
-				if (!StructKeyExists(variables, "core")) {
+				if (!StructKeyExists(variablesScope, "core")) {
 					if (application[$wheels.appKey].serverName == "Railo") {
 						// this is to work around a railo bug (https://jira.jboss.org/browse/RAILO-936)
 						// NB, fixed in Railo 3.2.0, so assume this is fixed in all lucee versions
-						variables.core = Duplicate(variables);
+						variablesScope.core = Duplicate(variablesScope);
 					} else {
-						variables.core = {};
-						StructAppend(variables.core, variables);
-						StructDelete(variables.core, "$wheels");
+						variablesScope.core = {};
+						StructAppend(variablesScope.core, variablesScope);
+						StructDelete(variablesScope.core, "$wheels");
 					}
 				}
-				StructAppend(variables, application[$wheels.appKey].mixins[$wheels.className], true);
+				StructAppend(variablesScope, application[$wheels.appKey].mixins[$wheels.className], true);
+
+				if (StructKeyExists(variablesScope, "this")) {
+					StructAppend(variablesScope.this, application[$wheels.appKey].mixins[$wheels.className], true);
+				}
+
+				if (StructKeyExists(variablesScope.core, "this")) {
+					StructAppend(variablesScope.core.this, application[$wheels.appKey].mixins[$wheels.className], true);
+				}
 			}
 
 			// Get rid of any extra data created in the variables scope.
-			if (StructKeyExists(variables, "$wheels")) {
-				StructDelete(variables, "$wheels");
+			if (StructKeyExists(variablesScope, "$wheels")) {
+				StructDelete(variablesScope, "$wheels");
 			}
 		}
+		return variablesScope;
 	}
 
 	/**
