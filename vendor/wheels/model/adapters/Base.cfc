@@ -454,6 +454,5 @@ component output=false extends="wheels.Global"{
 		);
 	}
 
-	include "../../plugins/standalone/injection.cfm";
 
 }

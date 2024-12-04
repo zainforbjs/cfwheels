@@ -175,6 +175,5 @@ component extends="Base" output=false {
 		return local.columns;
 	}
 
-	include "/wheels/plugins/standalone/injection.cfm";
 
 }

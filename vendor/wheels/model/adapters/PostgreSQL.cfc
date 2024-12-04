@@ -161,6 +161,5 @@ component extends="Base" output=false {
 		return "random()";
 	}
 
-	include "/wheels/plugins/standalone/injection.cfm";
 
 }
