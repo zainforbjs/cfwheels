@@ -1,6 +1,15 @@
 component output="false" displayName="Model" extends="wheels.Global"{
 
-	include "/wheels/model/functions.cfm";
-	include "/wheels/plugins/standalone/injection.cfm";
+	property name="Mixins" inject="id:Plugins";
 
+	function init(){
+		super.init();
+		return this;
+	}
+
+	include "/wheels/model/functions.cfm";
+
+	function onDIcomplete(){
+		Mixins.$initializeMixins(variables);
+	}
 }

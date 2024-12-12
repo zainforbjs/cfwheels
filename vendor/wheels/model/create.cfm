@@ -122,10 +122,13 @@ public any function $createInstance(
 	);
 
 	/**
-	 *	Wirebox adjustment
+	 *	Wirebox adjustment for wirebox specific structs
 	 */
 	if (isStruct(local.rv) && StructKeyExists(local.rv, '$wbMixer')){
 		structDelete(local.rv, '$wbMixer');
+	}
+	if (isStruct(local.rv) && StructKeyExists(local.rv, '$WBDELEGATEMAP')){
+		structDelete(local.rv, '$WBDELEGATEMAP');
 	}
 
 	// If the object should be persisted, run afterFind callback, otherwise run afterNew callback.

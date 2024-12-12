@@ -1,5 +1,9 @@
 component output="false" {
 
+	function init(){
+		return this;
+	}
+
 	public any function $doubleCheckedLock(required string name, required string condition, required string execute, struct conditionArgs = "#StructNew()#", struct executeArgs = "#StructNew()#", numeric timeout=30){
 		local.rv = $invoke(method = arguments.condition, invokeArgs = arguments.conditionArgs);
 		if(IsBoolean(local.rv) AND NOT local.rv){

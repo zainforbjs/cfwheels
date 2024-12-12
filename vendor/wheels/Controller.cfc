@@ -1,8 +1,14 @@
 component output="false" displayName="Controller" extends="wheels.Global"{
 
+	property name="Mixins" inject="id:Plugins";
+
+	function init(){
+		super.init();
+		return this;
+	}
+
 	include "/wheels/controller/functions.cfm";
 	include "/wheels/view/functions.cfm";
-	include "/wheels/plugins/standalone/injection.cfm";
 	if (
 		IsDefined("application")
 		&& StructKeyExists(application, "wheels")
@@ -11,4 +17,7 @@ component output="false" displayName="Controller" extends="wheels.Global"{
 		include "/wheels/tests/_assets/views/helpers.cfm";
 	}
 
+	function onDIcomplete(){
+		Mixins.$initializeMixins(variables);
+	}
 }

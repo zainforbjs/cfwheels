@@ -43,7 +43,7 @@ component extends="testbox.system.BaseSpec" {
 				_params = {controller = "test", action = "index"}
 				c = g.controller("test", _params)
 				d = g.$createObjectFromRoot(path = "wheels", fileName = "Dispatch", method = "$init")
-				t = CreateObject("component", "wheels.Test")
+				t = g.$createObjectFromRoot(path = "wheels", fileName = "Test", method = "init")
 			})
 
 			afterEach(() => {

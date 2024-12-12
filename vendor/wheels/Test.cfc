@@ -1,5 +1,11 @@
 component output="false" displayName="Test" extends="wheels.Global"{
 
+	property name="Mixins" inject="id:Plugins";
+
+	function init(){
+		super.init();
+		return this;
+	}
 	/*
 		Base component for rapidly writing/running test cases.
 
@@ -722,6 +728,9 @@ component output="false" displayName="Test" extends="wheels.Global"{
 		local.path = Replace(arguments.path, ExpandPath("/"), "", "one");
 		return (Left(local.path, 7) == "wheels/" || ListFindNoCase("index.cfm", local.path));
 	}
-	include "/wheels/plugins/standalone/injection.cfm";
+
+	function onDIcomplete(){
+		Mixins.$initializeMixins(variables);
+	}
 
 }
