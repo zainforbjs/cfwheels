@@ -83,6 +83,7 @@ component extends="wheels.Global" {
 	}
 
 	public void function $runOnRequestStart(required targetPage) {
+		local.Mixins = new wheels.Plugins();
 		// If the first debug point has not already been set in a reload request we set it here.
 		if (application.wheels.showDebugInformation) {
 			if (StructKeyExists(request.wheels, "execution")) {
@@ -110,7 +111,7 @@ component extends="wheels.Global" {
 
 		// Inject methods from plugins directly to Application.cfc.
 		if (!StructIsEmpty(application.wheels.mixins)) {
-			$include(template = "/wheels/plugins/standalone/injection.cfm");
+			local.Mixins.$initializeMixins(variables);
 		}
 
 		if (application.wheels.environment == "maintenance") {
