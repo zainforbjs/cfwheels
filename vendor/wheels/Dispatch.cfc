@@ -6,7 +6,6 @@ component output="false" extends="wheels.Global"{
 	 * Returns itself (the Dispatch object).
 	 */
 	public any function $init() {
-		Mixins.$initializeMixins(variables);
 		return this;
 	}
 
@@ -481,4 +480,7 @@ component output="false" extends="wheels.Global"{
 		return request.cgi.request_method;
 	}
 
+	function onDIComplete(){
+		Mixins.$initializeMixins(variables);
+	}
 }

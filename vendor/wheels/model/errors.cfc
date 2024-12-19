@@ -52,7 +52,7 @@ component {
 	 * [section: Model Object]
 	 * [category: Error Functions]
 	 */
-	private array function allAssociationErrors(array seenErrors = []) {
+	public array function allAssociationErrors(array seenErrors = []) {
 		local.rv = [];
 		for (local.association in variables.wheels.class.associations) {
 			if (StructKeyExists(this, local.association)) {

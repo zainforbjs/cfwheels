@@ -489,7 +489,7 @@ component output="false" displayName="Model" extends="wheels.Global"{
 			local.functionName = local.method.name;
 
 			// Only add public, non-inherited methods
-			if (method.access eq "public") {
+			if (local.method.access eq "public") {
 				variables[local.functionName] = componentInstance[local.functionName];
 				this[local.functionName] = componentInstance[local.functionName];
 			}
