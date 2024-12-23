@@ -124,11 +124,11 @@ component output="false" {
 	}
 
 	public any function $cfinvoke(required string component, required string method, struct invokeArguments){
-    cfinvoke(
+    cfinvoke
         component="#arguments.component#"
         method="#arguments.method#"
         returnVariable="#arguments.returnVariable#"
-        argumentCollection="#arguments.invokeArguments#");
+        argumentCollection="#arguments.invokeArguments#";
     return local.rv;
 	}
 
@@ -137,7 +137,7 @@ component output="false" {
     if(StructKeyExists(arguments, "componentReference")){
       arguments.component = arguments.componentReference;
       StructDelete(arguments, "componentReference");
-    }elseif(NOT StructKeyExists(variables, arguments.method)){
+    }else if(NOT StructKeyExists(variables, arguments.method)){
       // this is done so that we can call dynamic methods via "onMissingMethod" on the object (we need to pass in the object for this so it can call methods on the "this" scope instead)
       arguments.component = this;
     }
