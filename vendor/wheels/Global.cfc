@@ -123,7 +123,7 @@ component output="false" {
     cffile(attributeCollection="#arguments#");
 	}
 
-	public any function $cfinvoke(requried string component, requried string method, struct invokeArguments){
+	public any function $cfinvoke(required string component, required string method, struct invokeArguments){
     cfinvoke(
         component="#arguments.component#"
         method="#arguments.method#"
