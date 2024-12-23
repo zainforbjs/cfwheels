@@ -253,6 +253,8 @@ component output="false" extends="wheels.Global"{
 			$wheels.metaData = GetMetadata(variablesScope.this);
 			if (StructKeyExists($wheels.metaData, "displayName")) {
 				$wheels.className = $wheels.metaData.displayName;
+			} else if (findNoCase("controllers", $wheels.metaData.fullname)){
+				$wheels.className = "controller";
 			} else {
 				$wheels.className = Reverse(SpanExcluding(Reverse($wheels.metaData.name), "."));
 			}
