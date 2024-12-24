@@ -860,7 +860,8 @@ component output="false" {
 			local.rv = application.wirebox.getInstance(name = "#local.component#", initArguments = local.argumentCollection);
 		}
 		else{
-			local.rv = application.wirebox.getInstance(name = "#local.component#")[local.method](argumentCollection = local.argumentCollection);
+			local.instance = application.wirebox.getInstance(name = "#local.component#");
+      local.rv = invoke(local.instance, local.method, local.argumentCollection);
 		}
 		return local.rv;
 	}
