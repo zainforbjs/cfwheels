@@ -3,7 +3,6 @@ component output="false" displayName="Model" extends="wheels.Global"{
 	property name="Mixins" inject="id:Plugins";
 
 	function init(){
-		super.init();
 		$integrateComponents("wheels.model");
 		return this;
 	}
@@ -483,7 +482,7 @@ component output="false" displayName="Model" extends="wheels.Global"{
 	 */
 	private function $integrateFunctions(componentInstance) {
 		// Get all methods from the given component
-		local.methods = getComponentMetaData(componentInstance).functions;
+		local.methods = getMetaData(componentInstance).functions;
 
 		for (local.method in local.methods) {
 			local.functionName = local.method.name;

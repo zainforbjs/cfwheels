@@ -3,7 +3,6 @@ component output="false" displayName="Controller" extends="wheels.Global"{
 	property name="Mixins" inject="id:Plugins";
 
 	function init(){
-		super.init();
 		return this;
 	}
 
