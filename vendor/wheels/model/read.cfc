@@ -533,10 +533,11 @@ component {
 		arguments.select = primaryKey();
 		arguments.callbacks = false;
 		local.query = findAll(argumentCollection = arguments);
+		local.targetColumn = local.query[arguments.select];
 		if (local.quoted) {
-			local.rv = QuotedValueList(local.query[arguments.select], local.delimiter);
+			local.rv = QuotedValueList(local.targetColumn, local.delimiter);
 		} else {
-			local.rv = ValueList(local.query[arguments.select], local.delimiter);
+			local.rv = ValueList(local.targetColumn, local.delimiter);
 		}
 		return local.rv;
 	}
