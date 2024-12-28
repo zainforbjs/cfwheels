@@ -45,12 +45,7 @@ component {
 					parameterize = arguments.parameterize,
 					includeSoftDeletes = arguments.includeSoftDeletes
 				);
-				// local.values = ListToArray(ValueList(local.values[arguments.property]));
-
-				//Debug
-				local.values = processValues(arguments.property, local.values);
-				//Debug
-
+				local.values = ListToArray(ValueList(local.values[arguments.property]));
 				local.rv = arguments.ifNull;
 				if (!ArrayIsEmpty(local.values)) {
 					if (arguments.distinct) {
@@ -282,41 +277,4 @@ component {
 
 		return local.rv;
 	}
-
-
-	//
-    public void function processValues(required string property, required any values) {
-        // Validate the presence of the property
-        if (!StructKeyExists(arguments, "property")) {
-            throw(type="MissingArgumentException", message="The key [property] is required in the arguments scope.");
-        }
-
-        // Initialize an array to hold results
-        var valuesArray = [];
-
-        // Check the type of the values argument
-        if (isQuery(arguments.values)) {
-            // Handle if values is a query
-            if (!QueryColumnExists(arguments.values, arguments.property)) {
-                throw(type="MissingColumnException", message="The column [" & arguments.property & "] does not exist in the query.");
-            }
-            valuesArray = ListToArray(ValueList(arguments.values[arguments.property]));
-        } else if (isArray(arguments.values)) {
-            // Handle if values is an array of structures
-            for (var item in arguments.values) {
-                if (isStruct(item) && StructKeyExists(item, arguments.property)) {
-                    arrayAppend(valuesArray, item[arguments.property]);
-                }
-            }
-        } else if (isSimpleValue(arguments.values)) {
-            // Handle if values is a simple list
-            valuesArray = ListToArray(arguments.values);
-        } else {
-            throw(type="InvalidTypeException", message="Unsupported data type for 'values'. Expected query, array, or simple value.");
-        }
-
-        // Output the result for debugging (or return if needed)
-        writeDump(valuesArray);
-    }
-
 }
