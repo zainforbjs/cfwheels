@@ -45,7 +45,13 @@ component {
 					parameterize = arguments.parameterize,
 					includeSoftDeletes = arguments.includeSoftDeletes
 				);
-				local.values = ListToArray(ValueList(local.values[arguments.property]));
+				// local.values = ListToArray(ValueList(local.values[arguments.property]));
+
+				// Debug
+				local.listValues = ValueList(local.values[arguments.property]);
+				local.values = ListToArray(local.listValues);
+				// Debug
+
 				local.rv = arguments.ifNull;
 				if (!ArrayIsEmpty(local.values)) {
 					if (arguments.distinct) {
