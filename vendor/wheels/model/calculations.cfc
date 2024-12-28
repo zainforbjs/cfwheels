@@ -45,28 +45,7 @@ component {
 					parameterize = arguments.parameterize,
 					includeSoftDeletes = arguments.includeSoftDeletes
 				);
-				// local.values = ListToArray(ValueList(local.values[arguments.property]));
-
-				// Debug
-				
-				// Ensure local.argumentsProperty is resolved correctly
-				local.argumentsProperty = structKeyExists(local.values, arguments.property) ? local.values[arguments.property] : '';
-
-				// Ensure local.argumentsProperty is a valid query column or variable
-				local.tempList = local.argumentsProperty;
-
-				// Use ValueList only on valid data
-				if (!isNull(local.tempList)) {
-					local.listValues = ValueList(local.tempList);
-				} else {
-					local.listValues = "";
-				}
-
-				// Convert the list to an array
-				local.values = ListToArray(local.listValues);
-
-				// Debug
-
+				local.values = ListToArray(ValueList(local.values[arguments.property]));
 				local.rv = arguments.ifNull;
 				if (!ArrayIsEmpty(local.values)) {
 					if (arguments.distinct) {
