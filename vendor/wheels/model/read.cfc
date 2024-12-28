@@ -533,11 +533,29 @@ component {
 		arguments.select = primaryKey();
 		arguments.callbacks = false;
 		local.query = findAll(argumentCollection = arguments);
-		if (local.quoted) {
-			local.rv = QuotedValueList(local.query[arguments.select], local.delimiter);
+		// if (local.quoted) {
+		// 	local.rv = QuotedValueList(local.query[arguments.select], local.delimiter);
+		// } else {
+		// 	local.rv = ValueList(local.query[arguments.select], local.delimiter);
+		// }
+
+		//Debug
+		
+		// Step 1: Ensure arguments.select exists and the query is valid
+		if (isQuery(local.query) and structKeyExists(arguments, "select") and len(local.query[arguments.select])) {
+			// Step 2: Safely handle QuotedValueList and ValueList
+			if (local.quoted) {
+				local.rv = QuotedValueList(local.query[arguments.select], local.delimiter);
+			} else {
+				local.rv = ValueList(local.query[arguments.select], local.delimiter);
+			}
 		} else {
-			local.rv = ValueList(local.query[arguments.select], local.delimiter);
+			// Step 3: Handle fallback when query or arguments.select is invalid
+			local.rv = "";
 		}
+
+		//Debug
+
 		return local.rv;
 	}
 
