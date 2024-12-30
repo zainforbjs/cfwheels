@@ -138,6 +138,5 @@ component extends="Base" output=false {
 		return arguments.table & " " & arguments.alias;
 	}
 
-	include "/wheels/plugins/standalone/injection.cfm";
 
 }

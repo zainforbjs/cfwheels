@@ -249,6 +249,5 @@ component extends="Base" output=false {
 		return "NEWID()";
 	}
 
-	include "/wheels/plugins/standalone/injection.cfm";
 
 }

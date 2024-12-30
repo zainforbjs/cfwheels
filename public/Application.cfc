@@ -79,13 +79,12 @@ component output="false" {
 	include "../app/config/app.cfm";
 
 	function onApplicationStart() {
-		// include "/wheels/controller/appfunctions.cfm";
 		wirebox = new wirebox.system.ioc.Injector("wheels.Wirebox");
 
 		/* wheels/global object */
 		application.wo = wirebox.getInstance("global");
 		initArgs.path="wheels";
-		initArgs.filename="onapplicationstart";		
+		initArgs.filename="onapplicationstart";
 		application.wirebox.getInstance(name = "wheels.events.onapplicationstart", initArguments = initArgs).$init();
 	}
 
@@ -254,9 +253,4 @@ component output="false" {
 		return true;
 	}
 
-	/* Commented out the Duplicate onMissingTemplate function
-	public boolean function onMissingTemplate( string targetPage ) {
-		include "/wheels/events/onmissingtemplate.cfm";
-		return true;
-	} */
 }

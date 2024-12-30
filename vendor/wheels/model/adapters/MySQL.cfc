@@ -115,6 +115,5 @@ component extends="Base" output=false {
 		return "() VALUES()";
 	}
 
-	include "/wheels/plugins/standalone/injection.cfm";
 
 }

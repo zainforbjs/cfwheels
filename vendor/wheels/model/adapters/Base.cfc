@@ -1,6 +1,5 @@
-component output=false {
+component output=false extends="wheels.Global"{
 
-	include "/wheels/global/functions.cfm";
 	include "cfquery.cfm";
 
 	/**
@@ -455,6 +454,5 @@ component output=false {
 		);
 	}
 
-	include "../../plugins/standalone/injection.cfm";
 
 }
