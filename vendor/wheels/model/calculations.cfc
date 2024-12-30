@@ -45,7 +45,14 @@ component {
 					parameterize = arguments.parameterize,
 					includeSoftDeletes = arguments.includeSoftDeletes
 				);
-				local.values = ListToArray(ValueList(local.values[arguments.property]));
+				local.list = CreateObject("java", "java.lang.StringBuilder");
+    		for (local.i = 1; local.i <= local.values.recordCount; local.i++) {
+					if(local.i > 1){
+						local.list.append(",");
+					}
+					local.list.append(local.values[arguments.property][local.i]);
+				}
+				local.values = ListToArray(local.list.toString());
 				local.rv = arguments.ifNull;
 				if (!ArrayIsEmpty(local.values)) {
 					if (arguments.distinct) {

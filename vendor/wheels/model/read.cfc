@@ -533,13 +533,20 @@ component {
 		arguments.select = primaryKey();
 		arguments.callbacks = false;
 		local.query = findAll(argumentCollection = arguments);
-		if (local.quoted) {
-			local.rv = QuotedValueList(local.query[arguments.select], local.delimiter);
-		} else {
-			local.rv = ValueList(local.query[arguments.select], local.delimiter);
-		}
+    local.list = CreateObject("java", "java.lang.StringBuilder");
+    for (local.i = 1; local.i <= local.query.recordCount; local.i++) {
+      local.value = local.query[arguments.select][local.i];
+      if (local.i > 1) {
+        local.list.append(local.delimiter);
+      }
+      if (local.quoted) {
+        local.list.append("'").append(local.value).append("'");
+      } else {
+        local.list.append(local.value);
+      }
+    }
 
-		return local.rv;
+    return local.list.toString();
 	}
 
 	/**
