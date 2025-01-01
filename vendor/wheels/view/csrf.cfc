@@ -7,7 +7,7 @@ component {
 	 *
 	 * @encode [see:styleSheetLinkTag].
 	 */
-	string function csrfMetaTags(boolean encode) {
+	public string function csrfMetaTags(boolean encode) {
 		$args(name = "csrfMetaTags", args = arguments);
 		local.metaTags = $tag(name = "meta", attributes = {name = "csrf-param", content = "authenticityToken"});
 		local.metaTags &= $tag(
@@ -25,7 +25,7 @@ component {
 	 * [section: View Helpers]
 	 * [category: General Form Functions]
 	 */
-	string function authenticityTokenField() {
+	public string function authenticityTokenField() {
 		// Store a new authenticity token.
 		local.authenticityToken = $generateAuthenticityToken();
 
