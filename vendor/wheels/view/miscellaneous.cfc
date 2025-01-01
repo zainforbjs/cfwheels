@@ -627,13 +627,16 @@ component {
 	/**
 	 * Internal function.
 	 */
-	public any function $getObject(required string objectname) {
+	public any function $getObject(required string objectname, struct variableScope) {
+		if(isNull(variableScope) || !isStruct(variableScope)){
+			variableScope = variables;
+		}
 		try {
 			if (Find(".", arguments.objectName) || Find("[", arguments.objectName)) {
-				// we can't directly invoke objects in structure or arrays of objects so we must evaluate
-				local.rv = Evaluate(arguments.objectName);
+				// Evaluate the expression in the context of variableScope
+				return Evaluate(reReplace(arguments.objectName, "^variables\.", "variableScope.", "one"));
 			} else {
-				local.rv = variables[arguments.objectName];
+				local.rv = variableScope[arguments.objectName];
 			}
 		} catch (any e) {
 			if ($get("showErrorInformation")) {
