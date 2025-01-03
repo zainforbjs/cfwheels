@@ -1,12 +1,21 @@
 component output=false extends="wheels.Global"{
 
-	public struct function $executeQuery(required struct queryAttributes, required array sql, required boolean parameterize, required numeric limit, reuired numeric offset, required string comment, reuired string debugName, reuired string primaryKey){
+	public struct function $executeQuery(
+		required struct queryAttributes,
+		required array sql,
+		required boolean parameterize,
+		required numeric limit,
+		required numeric offset,
+		required string comment,
+		required string debugName,
+		required string primaryKey
+	) {
     // Since we allow the developer to pass in the name to use for the query variable we need to avoid name clashing.
 		// We do this by putting all our own variables inside a $wheels struct.
 		local.$wheels = {};
 		local.$wheels.rv = {};
 
-    query attributeCollection=arguments.queryAttributes {
+    cfquery(attributeCollection=arguments.queryAttributes){
       local.$wheels.pos = 0;
 
       for (local.$wheels.i in arguments.sql) {
@@ -19,14 +28,14 @@ component output=false extends="wheels.Global"{
           } else if (structKeyExists(local.$wheels.queryParamAttributes, "list")) {
             if (arguments.parameterize) {
 							writeOutput("(");
-              queryParam attributeCollection=local.$wheels.queryParamAttributes;
+              cfqueryParam(attributeCollection=local.$wheels.queryParamAttributes);
 							writeOutput(")");
             } else {
               writeOutput("(" & preserveSingleQuotes(local.$wheels.i.value) & ")");
             }
           } else {
             if (arguments.parameterize) {
-              queryParam attributeCollection=local.$wheels.queryParamAttributes;
+              cfqueryParam(attributeCollection=local.$wheels.queryParamAttributes);
             } else {
               writeOutput($quoteValue(str=local.$wheels.i.value, sqlType=local.$wheels.i.type));
             }
