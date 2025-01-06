@@ -1,6 +1,4 @@
-component extends="wheels.Global"{
-
-	include "../basefunctions.cfm";
+component extends="wheels.migrator.Base"{
 
 	/**
 	 * generates sql for a column's data type definition
