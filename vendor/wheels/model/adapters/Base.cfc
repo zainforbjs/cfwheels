@@ -1,6 +1,80 @@
 component output=false extends="wheels.Global"{
 
-	include "cfquery.cfm";
+	public struct function $executeQuery(
+		required struct queryAttributes,
+		required array sql,
+		required boolean parameterize,
+		required numeric limit,
+		required numeric offset,
+		required string comment,
+		required string debugName,
+		required string primaryKey
+	) {
+    // Since we allow the developer to pass in the name to use for the query variable we need to avoid name clashing.
+		// We do this by putting all our own variables inside a $wheels struct.
+		local.$wheels = {};
+		local.$wheels.rv = {};
+
+    cfquery(attributeCollection=arguments.queryAttributes){
+      local.$wheels.pos = 0;
+
+      for (local.$wheels.i in arguments.sql) {
+        local.$wheels.pos += 1;
+        if (isStruct(local.$wheels.i)) {
+          local.$wheels.queryParamAttributes = $queryParams(local.$wheels.i);
+          if (!isBinary(local.$wheels.i.value) && local.$wheels.i.value == "null" && local.$wheels.pos > 1 &&
+            (right(arguments.sql[local.$wheels.pos - 1], 2) == "IS" || right(arguments.sql[local.$wheels.pos - 1], 6) == "IS NOT")) {
+            writeOutput("NULL");
+          } else if (structKeyExists(local.$wheels.queryParamAttributes, "list")) {
+            if (arguments.parameterize) {
+							writeOutput("(");
+              cfqueryParam(attributeCollection=local.$wheels.queryParamAttributes);
+							writeOutput(")");
+            } else {
+              writeOutput("(" & preserveSingleQuotes(local.$wheels.i.value) & ")");
+            }
+          } else {
+            if (arguments.parameterize) {
+              cfqueryParam(attributeCollection=local.$wheels.queryParamAttributes);
+            } else {
+              writeOutput($quoteValue(str=local.$wheels.i.value, sqlType=local.$wheels.i.type));
+            }
+          }
+        } else {
+          local.$wheels.i = replace(preserveSingleQuotes(local.$wheels.i), "[[comma]]", ",", "all");
+          writeOutput(preserveSingleQuotes(local.$wheels.i));
+        }
+        writeOutput(chr(13) & chr(10));
+      }
+
+      if (arguments.limit) {
+        writeOutput("LIMIT " & arguments.limit);
+        if (arguments.offset) {
+          writeOutput(chr(13) & chr(10) & "OFFSET " & arguments.offset);
+        }
+      }
+
+      if (len(arguments.comment)) {
+        writeOutput(arguments.comment);
+      }
+    }
+
+    if(StructKeyExists(local, arguments.debugName)){
+      local.$wheels.rv.query = local[arguments.debugName];
+    }
+    // Get / set the primary key name / value when Lucee / ACF cannot retrieve it for us.
+		local.$wheels.id = $identitySelect(
+			primaryKey = arguments.primaryKey,
+			queryAttributes = arguments.queryAttributes,
+			result = local.$wheels.result
+		);
+		if (StructKeyExists(local.$wheels, "id") && IsStruct(local.$wheels.id) && !StructIsEmpty(local.$wheels.id)) {
+			StructAppend(local.$wheels.result, local.$wheels.id);
+		}
+
+		local.$wheels.rv.result = local.$wheels.result;
+		return local.$wheels.rv;
+	}
 
 	/**
 	 * Initialize and return the adapter object.

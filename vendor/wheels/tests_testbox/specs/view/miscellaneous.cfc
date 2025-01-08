@@ -1,7 +1,9 @@
 component extends="testbox.system.BaseSpec" {
 
-	include "/wheels/view/miscellaneous.cfm"
-	
+	function beforeAll(){
+		miscellaneous = application.wirebox.getInstance( "wheels.Controller" );
+	};
+
 	function run() {
 
 		g = application.wo
@@ -31,21 +33,21 @@ component extends="testbox.system.BaseSpec" {
 
 			it("is getting object from request scope", () => {
 				request.obj = g.model("post").findOne()
-				result = $getObject("request.obj")
+				result = miscellaneous.$getObject( objectname = "request.obj", variableScope = variables )
 
 				expect(result).toBeInstanceOf("post")
 			})
 
 			it("is getting object from default scope", () => {
 				obj = g.model("post").findOne()
-				result = $getObject("obj")
+				result = miscellaneous.$getObject( objectname = "obj", variableScope = variables )
 
 				expect(result).toBeInstanceOf("post")
 			})
 
 			it("is getting object from variables scope", () => {
 				variables.obj = g.model("post").findOne()
-				result = $getObject("variables.obj")
+				result = miscellaneous.$getObject( objectname = "variables.obj", variableScope = variables )
 
 				expect(result).toBeInstanceOf("post")
 			})

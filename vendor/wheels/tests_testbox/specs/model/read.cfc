@@ -18,8 +18,8 @@ component extends="testbox.system.BaseSpec" {
 					isTestable = false
 				}
 			})
-			
-			// Commenting this test temporarily to make the github actions work as it is not working in tetsbox
+
+			// Commenting this test temporarily to make the github actions work as it is not working in testbox
 			// it("findall respects model config datasource", () => {
 			// 	if (!isTestable) return;
 			// 	transaction {

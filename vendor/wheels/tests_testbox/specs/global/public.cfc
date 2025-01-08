@@ -194,7 +194,7 @@ component extends="testbox.system.BaseSpec" {
 				expect(result).toBe("actionGet")
 			})
 
-			// Commenting this test temporarily to make the github actions work as it is not working in tetsbox
+			// Commenting this test temporarily to make the github actions work as it is not working in testbox
 			// it("processes request as POST", () => {
 			// 	local.params = {action = "actionPost", controller = "verifies"}
 			// 	result = g.processRequest(method = "post", params = local.params)
