@@ -804,7 +804,7 @@ component {
 							// Add to the arguments collection
 							local.argumentsCollection[local.variableName] = local.variableValue;
 						}
-						local.rv = this[local.beforeParenthesis](argumentCollection=local.argumentsCollection); // Call the function
+						local.rv = invoke(this, local.beforeParenthesis, local.argumentsCollection); // Call the function
 					} else {
 						local.rv = this[local.beforeParenthesis]; // Return the variable value
 					}
