@@ -515,7 +515,6 @@ component {
 	 */
 	public boolean function $evaluateCondition() {
 		local.rv = false;
-		// since cf8 can't handle cfscript operators (==, != etc) inside an Evaluate() call we replace them with eq, neq etc in a try / catch
 		local.evaluate = "condition,unless";
 		local.iEnd = ListLen(local.evaluate);
 		for (local.i = 1; local.i <= local.iEnd; local.i++) {
@@ -523,12 +522,9 @@ component {
 			if (StructKeyExists(arguments, local.item) && Len(arguments[local.item])) {
 				local.key = local.item & "Evaluated";
 				try {
-					local[local.key] = Evaluate(arguments[local.item]);
+        	local[local.key] = EvaluateConditionString(arguments[local.item]);
 				} catch (any e) {
-					// cfformat-ignore-start
-					arguments[local.item] = Replace(ReplaceList(arguments[local.item], "==,!=,<,<=,>,>=", " eq , neq , lt , lte , gt , gte "), "  ", " ", "all");
-					// cfformat-ignore-end
-					local[local.key] = Evaluate(arguments[local.item]);
+					return false;
 				}
 			}
 		}
@@ -754,5 +750,135 @@ component {
 			}
 		}
 		return local.rv;
+	}
+
+	/**
+	 * Function to evaluate a condition string without using Evaluate()
+	 * @condition The condition to resolve
+	 */
+	public any function EvaluateConditionString(required string condition) {
+		// Replace CFScript operators with CFScript equivalents
+		local.operatorList = "eq,neq,lt,lte,gt,gte";
+		local.normalizedCondition = ReplaceList(condition, "==,!=,<,<=,>,>=", local.operatorList);
+		local.normalizedCondition = Replace(local.normalizedCondition, "  ", " ", "all"); // Normalize spaces
+		local.before = local.normalizedCondition;
+
+		for(value in local.operatorList){
+			local.position = FindNoCase(value, local.normalizedCondition);
+			if(local.position){
+				local.middle = value;
+				local.before = trim(Mid(local.normalizedCondition,1,local.position - 1));
+				local.after = trim(Mid(local.normalizedCondition, local.position + len(local.middle), len(local.normalizedCondition)));
+			}
+		}
+
+		// Handle cases where the condition references `this`, logical comparisons, or function calls
+		if (Left(local.before, 5) == "this.") {
+
+			// Handle `this.someMethod()` or `this.someVariable`
+			local.key = Mid(local.before, 6, len(local.before)); // Extract the part after "this."
+			local.beforeRegexPattern = "^(.*?)\(";
+			local.beforeMatch = REFindNoCase(local.beforeRegexPattern, local.key, 1, true);
+
+			if (local.beforeMatch.pos[1] > 0) {
+				local.beforeParenthesis = Mid(local.key, 1, local.beforeMatch.len[1] - 1);
+				local.afterParenthesis = Mid(local.key, local.beforeMatch.len[1] + 1, len(local.key));
+			};
+
+			if(structKeyExists(local, 'afterParenthesis')){
+				local.afterRegexPattern = "^(.*?)\)";
+				local.afterMatch = REFindNoCase(local.afterRegexPattern, local.afterParenthesis, 1, true);
+				if (local.afterMatch.pos[1] > 0) {
+					local.afterParenthesis = Mid(local.afterParenthesis, 1, local.afterMatch.len[1] - 1);
+				}
+
+				if(structKeyExists(this, local.beforeParenthesis)){
+
+					if (IsCustomFunction(this[local.beforeParenthesis])) {
+						for (argString in local.afterParenthesis) {
+							// Split the string on "="
+							local.splitArg = ListToArray(argString, "=");
+							local.variableName = Trim(local.splitArg[1]); // Left-hand side (variable name)
+							local.variableValue = Replace(local.splitArg[2], "'", "", "all"); // Right-hand side (value without quotes)
+
+							// Add to the arguments collection
+							local.argumentsCollection[local.variableName] = local.variableValue;
+						}
+						local.rv = invoke(this, local.beforeParenthesis, local.argumentsCollection); // Call the function
+					} else {
+						local.rv = this[local.beforeParenthesis]; // Return the variable value
+					}
+				}
+			}
+
+			if (StructKeyExists(this, local.key)) {
+				if (IsCustomFunction(this[local.key])) {
+					local.rv = invoke(this, local.key); // Call the function
+				} else {
+					local.rv = this[local.key]; // Return the variable value
+				}
+			}
+
+		} else if(right(local.normalizedCondition, 2) eq '()'){
+			if(find("!", local.normalizedCondition)){
+				local.normalizedCondition = replace(local.normalizedCondition, "!", "", "one");
+				return !invoke(this, replace(local.normalizedCondition, '()', ''));
+			}	else{
+				return invoke(this, replace(local.normalizedCondition, '()', ''));
+			}
+		} else {
+			// Handle logical expressions (e.g., "1 eq 0", "5 gt 3", "myFunction() eq true")
+			local.tokens = ListToArray(local.normalizedCondition, " ");
+			if (ArrayLen(local.tokens) < 3) {
+				return false; // Invalid condition
+			}
+
+			local.leftOperand = local.tokens[1];
+			local.operator = local.tokens[2];
+			local.rightOperand = local.tokens[3];
+
+			// Resolve variables or cast to numeric values
+			local.leftOperand = isNumeric(local.leftOperand) ? JavaCast("double", local.leftOperand) : local.leftOperand;
+			local.rightOperand = isNumeric(local.rightOperand) ? JavaCast("double", local.rightOperand) : local.rightOperand;
+			// Evaluate the logical expression
+			return resolveOperator(local.leftOperand, local.rightOperand, local.operator);
+		}
+
+		if(structKeyExists(local, 'after') && structKeyExists(local, 'middle')){
+			local.singleRegexPattern = "^'.*'$";
+			local.doubleRegexPattern = '^".*"$';
+			if (REFindNoCase(local.singleRegexPattern, local.after)) {
+    	  local.after = Replace(local.after, "'", "", "all");
+    	}
+			if (REFindNoCase(local.doubleRegexPattern, local.after)) {
+    	  local.after = Replace(local.after, '"', "", "all");
+    	}
+
+			return resolveOperator(local.rv, local.after, local.middle);
+		}
+
+		return structKeyExists(local, rv)? local.rv : false;
+	}
+
+	/**
+ 	 * Evaluate a logical expression based on the operator.
+ 	 */
+	public boolean function resolveOperator(required any firstOperator, required any secondOperator, required any operator){
+		switch (arguments.operator) {
+			case "eq":
+				return (arguments.firstOperator == arguments.secondOperator);
+			case "neq":
+				return (arguments.firstOperator != arguments.secondOperator);
+			case "lt":
+				return (arguments.firstOperator < arguments.secondOperator);
+			case "lte":
+				return (arguments.firstOperator <= arguments.secondOperator);
+			case "gt":
+				return (arguments.firstOperator > arguments.secondOperator);
+			case "gte":
+				return (arguments.firstOperator >= arguments.secondOperator);
+			default:
+				throw("Unsupported operator in condition: " & arguments.operator);
+		}
 	}
 }
