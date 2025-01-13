@@ -813,7 +813,7 @@ component {
 
 			if (StructKeyExists(this, local.key)) {
 				if (IsCustomFunction(this[local.key])) {
-					local.rv = this[local.key](); // Call the function
+					local.rv = invoke(this, local.key); // Call the function
 				} else {
 					local.rv = this[local.key]; // Return the variable value
 				}
@@ -822,9 +822,9 @@ component {
 		} else if(right(local.normalizedCondition, 2) eq '()'){
 			if(find("!", local.normalizedCondition)){
 				local.normalizedCondition = replace(local.normalizedCondition, "!", "", "one");
-				return !this[replace(local.normalizedCondition, '()', '')]();
+				return !invoke(this, replace(local.normalizedCondition, '()', ''));
 			}	else{
-				return this[replace(local.normalizedCondition, '()', '')]();
+				return invoke(this, replace(local.normalizedCondition, '()', ''));
 			}
 		} else {
 			// Handle logical expressions (e.g., "1 eq 0", "5 gt 3", "myFunction() eq true")
