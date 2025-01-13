@@ -776,13 +776,13 @@ component {
 		if (Left(local.before, 5) == "this.") {
 
 			// Handle `this.someMethod()` or `this.someVariable`
-			var key = Mid(local.before, 6); // Extract the part after "this."
+			local.key = Mid(local.before, 6, len(local.before)); // Extract the part after "this."
 			local.beforeRegexPattern = "^(.*?)\(";
-			local.beforeMatch = REFindNoCase(local.beforeRegexPattern, key, 1, true);
+			local.beforeMatch = REFindNoCase(local.beforeRegexPattern, local.key, 1, true);
 
 			if (local.beforeMatch.pos[1] > 0) {
-				local.beforeParenthesis = Mid(key, 1, local.beforeMatch.len[1] - 1);
-				local.afterParenthesis = Mid(key, local.beforeMatch.len[1] + 1, len(key));
+				local.beforeParenthesis = Mid(local.key, 1, local.beforeMatch.len[1] - 1);
+				local.afterParenthesis = Mid(local.key, local.beforeMatch.len[1] + 1, len(local.key));
 			};
 
 			if(structKeyExists(local, 'afterParenthesis')){
@@ -811,11 +811,11 @@ component {
 				}
 			}
 
-			if (StructKeyExists(this, key)) {
-				if (IsCustomFunction(this[key])) {
-					local.rv = this[key](); // Call the function
+			if (StructKeyExists(this, local.key)) {
+				if (IsCustomFunction(this[local.key])) {
+					local.rv = this[local.key](); // Call the function
 				} else {
-					local.rv = this[key]; // Return the variable value
+					local.rv = this[local.key]; // Return the variable value
 				}
 			}
 
