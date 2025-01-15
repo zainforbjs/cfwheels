@@ -142,13 +142,28 @@ component {
 						arguments.value = TimeFormat(local.value, 'tt');
 					}
 				} else {
-					arguments.value = Evaluate("#local.item#(local.value)");
+					arguments.value = resolveDateTime(local.item, local.value);
 				}
 			}
 			if (local.firstDone) {
 				local.rv &= arguments.separator;
 			}
-			local.rv &= Evaluate("$#local.item#SelectTag(argumentCollection=arguments)");
+			local.functionMap = {
+				year: "$yearSelectTag",
+				month: "$monthSelectTag",
+				day: "$daySelectTag",
+				hour: "$hourSelectTag",
+				minute: "$minuteSelectTag",
+				second: "$secondSelectTag",
+				yearMonthHourMinuteSecond: "$yearMonthHourMinuteSecondSelectTag",
+				ampm: "$ampmSelectTag"
+			};
+
+			if (structKeyExists(functionMap, local.item)) {
+				local.rv &= invoke(this, local.functionMap[local.item], arguments);
+			} else {
+				throw("Invalid item value: " & local.item);
+			}
 			local.firstDone = true;
 		}
 		return local.rv;
@@ -186,7 +201,7 @@ component {
 			if (arguments.twelveHour && arguments.$type IS "hour") {
 				arguments.value = TimeFormat(arguments.$now, 'h');
 			} else {
-				arguments.value = Evaluate("#arguments.$type#(arguments.$now)");
+				arguments.value = resolveDateTime(arguments.$type, arguments.$now);
 			}
 		}
 
@@ -311,5 +326,24 @@ component {
 			attributes = arguments,
 			encode = local.encode
 		);
+	}
+
+	public numeric function resolveDateTime(required string dateTimeString, required date dateTimeValue){
+		switch(arguments.dateTimeString) {
+			case "year":
+				return Year(arguments.dateTimeValue);
+			case "month":
+				return Month(arguments.dateTimeValue);
+			case "day":
+				return Day(arguments.dateTimeValue);
+			case "hour":
+				return Hour(arguments.dateTimeValue);
+			case "minute":
+				return Minute(arguments.dateTimeValue);
+			case "second":
+				return Second(arguments.dateTimeValue);
+			default:
+				throw("Invalid type specified: " & arguments.dateTimeString);
+		}
 	}
 }
