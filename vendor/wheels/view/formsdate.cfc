@@ -149,18 +149,18 @@ component {
 				local.rv &= arguments.separator;
 			}
 			local.functionMap = {
-				year: $yearSelectTag,
-				month: $monthSelectTag,
-				day: $daySelectTag,
-				hour: $hourSelectTag,
-				minute: $minuteSelectTag,
-				second: $secondSelectTag,
-				yearMonthHourMinuteSecond: $yearMonthHourMinuteSecondSelectTag,
-				ampm: $ampmSelectTag
+				year: "$yearSelectTag",
+				month: "$monthSelectTag",
+				day: "$daySelectTag",
+				hour: "$hourSelectTag",
+				minute: "$minuteSelectTag",
+				second: "$secondSelectTag",
+				yearMonthHourMinuteSecond: "$yearMonthHourMinuteSecondSelectTag",
+				ampm: "$ampmSelectTag"
 			};
 
 			if (structKeyExists(functionMap, local.item)) {
-				local.rv &= local.functionMap[local.item](argumentCollection=arguments);
+				local.rv &= invoke(this, local.functionMap[local.item], arguments);
 			} else {
 				throw("Invalid item value: " & local.item);
 			}
