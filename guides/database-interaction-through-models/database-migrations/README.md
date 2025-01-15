@@ -10,23 +10,23 @@ With CFWheels 2.x, you can now create, alter and populate your database via cfsc
 
 ### Getting Started
 
-If you're new to this concept, the best way to get going is by following the `[migrations]` link in the debug footer to load the built in GUI. Naturally, you will need your application's datasource setup and ready to go to get started.
+If you're new to this concept, the best way to get going is by following the `[Migrator]` link in the debug footer to load the built in GUI. Naturally, you will need your application's datasource setup and ready to go to get started.
 
 ![](../../.gitbook/assets/cc70cb0-dbmigrate\_1.png)
 
-On the first tab, we provide some simple database info, just so you can check you're running against the correct datasource. We're going to start by creating a simple template.
+You can go to the `info` tab in the navbar and you will see a `Database` section, just so you can check you're running against the correct datasource. We're going to start by creating a simple template.
 
 ### Creating your First Template
 
-The create template tab allows for creation of either a blank CFC file, or from a selection of pre-populated templates. Whilst none of these templates will provide all the information required for a complete database migration, they are a good starting point and fairly heavily commented.
+The Templating tab allows for creation of either a blank CFC file, or from a selection of pre-populated templates. Whilst none of these templates will provide all the information required for a complete database migration, they are a good starting point and fairly heavily commented.
 
 ![](../../.gitbook/assets/a70878e-dbmigrate\_2.png)
 
 As we've not setup any migrations before, the system needs to know what prefix we want to use for our migration files. Each approach - `Timestamp` and `Numeric` is perfectly valid, but we recommend the `Timestamp` prefix if you're just starting out. Once you have a migration file, this section will disappear as it will get that info from the existing files.
 
-For this tutorial, we're going to create the `users` table. So under `Create a Template`, we will select `Create table` and add a migration description of `Create User Table`.
+For this tutorial, we're going to create the `users` table. So under `Create a Template`, we will select `Create table` and add a description of `Create User Table`.
 
-Clicking on `Create Migration File` will then create a CFC at `/db/migrate/20170420100502_Create_User_Table.cfc`. The system will also display all messages at the top of the GUI whenever it does something - so for this command, we see `The migration 20170420100502_Create_User_Table.cfc file was created`
+Clicking on `Create Migration File` will then create a CFC at `/app/migrator/migrations/20170420100502_Create_User_Table.cfc`. The system will also display all messages at the bottom of the GUI whenever it does something - so for this command, we see `The migration 20170420100502_Create_User_Table.cfc file was created`
 
 ### Populating the Create User Table Template
 
@@ -39,23 +39,22 @@ The important concept to grasp is that **anything which up() does, down() must u
 {% code title="up()" %}
 ```javascript
 function up() {
- hasError = false;
- transaction {
-  try {
-    t = createTable(name='tableName');
-        t.timestamps();
-        t.create();
-      } catch (any ex) {
-            hasError = true;
-            catchObject = ex;
-        }
-        if (!hasError) {
-            transaction action="commit";
-        } else {
-            transaction action="rollback";
-            throw(errorCode="1", detail=catchObject.detail, message=catchObject.message, type="any");
-        }
-    }
+	transaction {
+		try {
+			t = createTable(name = 'tableName');
+			t.timestamps();
+			t.create();
+		} catch (any e) {
+			local.exception = e;
+		}
+
+		if (StructKeyExists(local, "exception")) {
+			transaction action="rollback";
+			Throw(errorCode = "1", detail = local.exception.detail, message = local.exception.message, type = "any");
+		} else {
+			transaction action="commit";
+		}
+	}
 }
 ```
 {% endcode %}
@@ -80,7 +79,7 @@ t.create();
 ```
 {% endcode %}
 
-`t.timestamps();` creates CFWheels [automatic timestamp](https://guides.cfwheels.org/cfwheels-guides/database-interaction-through-models/automatic-time-stamps) columns of `createdAt`,`updatedAt` and `deletedAt`.
+`t.timestamps();` creates CFWheels [automatic timestamp](https://guides.cfwheels.org/2.5.0/v/3.0.0-snapshot/database-interaction-through-models/automatic-time-stamps) columns of `createdAt`,`updatedAt` and `deletedAt`.
 
 The `t.create();` is the final statement which executes the actual action.
 
@@ -151,14 +150,14 @@ Simply click the button to migrate the database to our new version. From this sc
 
 ### Migrator Configuration Settings
 
-| Setting               | Type    | Default                          | Description                                                                                                                    |
-| --------------------- | ------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| autoMigrateDatabase   | Boolean | false                            | Automatically runs available migration on applicationstart.                                                                    |
-| migratorTableName     | String  | migratorversions                 | The name of the table that stores the versions migrated.                                                                       |
-| createMigratorTable   | Boolean | true                             | Create the migratorversions database table.                                                                                    |
-| writeMigratorSQLFiles | Boolean | false                            | Writes the executed SQL to a .sql file in the /migrator/sql directory.                                                         |
-| migratorObjectCase    | String  | lower                            | Specifies the case of created database object. Options are 'lower', 'upper' and 'none' (which uses the given value unmodified) |
-| allowMigrationDown    | Boolean | false (true in development mode) | Prevents 'down' migrations (rollbacks)                                                                                         |
+| Setting               | Type    | Default                          | Description                                                                                                                    	 |
+| --------------------- | ------- | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| autoMigrateDatabase   | Boolean | false                            | Automatically runs available migration on applicationstart.                                                                    	 |
+| migratorTableName     | String  | migratorversions                 | The name of the table that stores the versions migrated.                                                                       	 |
+| createMigratorTable   | Boolean | true                             | Create the migratorversions database table.                                                                                    	 |
+| writeMigratorSQLFiles | Boolean | false                            | Writes the executed SQL to a .sql file in the app/migrator/sql directory.                                                         |
+| migratorObjectCase    | String  | lower                            | Specifies the case of created database object. Options are 'lower', 'upper' and 'none' (which uses the given value unmodified) 	 |
+| allowMigrationDown    | Boolean | false (true in development mode) | Prevents 'down' migrations (rollbacks)                                                                                         	 |
 
 ### Setting Column Types
 

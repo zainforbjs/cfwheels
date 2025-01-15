@@ -18,11 +18,11 @@ If you've used `<cfinclude>` a lot in the past (and who hasn't?!), you probably 
 
 ### Storing Your Partial Files
 
-To make it clear that a file is a partial and not a full page, we start the filename with an underscore character. You can place the partial file anywhere in the `views` folder. When locating partials, Wheels will use the same rules as it does for the `template` argument to [renderView()](https://api.cfwheels.org/controller.renderview.html). This means that if you save the partial in the current controller's view folder, you reference it simply by its name.
+To make it clear that a file is a partial and not a full page, we start the filename with an underscore character. You can place the partial file anywhere in the `app/views` folder. When locating partials, Wheels will use the same rules as it does for the `template` argument to [renderView()](https://api.cfwheels.org/controller.renderview.html). This means that if you save the partial in the current controller's view folder, you reference it simply by its name.
 
-For example, if you wanted to have a partial for a comment in your `blog` controller, you would save the file at `views/blog/_comment.cfm` and reference it (in [includePartial()](https://api.cfwheels.org/controller.includepartial.html) and [renderPartial()](https://api.cfwheels.org/controller.renderpartial.html)) with just "`comment`" as the first argument.
+For example, if you wanted to have a partial for a comment in your `blog` controller, you would save the file at `app/views/blog/_comment.cfm` and reference it (in [includePartial()](https://api.cfwheels.org/controller.includepartial.html) and [renderPartial()](https://api.cfwheels.org/controller.renderpartial.html)) with just "`comment`" as the first argument.
 
-Sometimes it's useful to share partials between controllers though. Perhaps you have a banner ad that should be displayed across several controllers. One common approach then is to save them in a dedicated folder for this at the root of the `views` folder. To reference partials in this folder, in this case named shared, you would then pass in `"/shared/banner"` to [includePartial()](https://api.cfwheels.org/controller.includepartial.html) instead.
+Sometimes it's useful to share partials between controllers though. Perhaps you have a banner ad that should be displayed across several controllers. One common approach then is to save them in a dedicated folder for this at the root of the `app/views` folder. To reference partials in this folder, in this case named shared, you would then pass in `"/shared/banner"` to [includePartial()](https://api.cfwheels.org/controller.includepartial.html) instead.
 
 ### Making the Call
 
@@ -34,7 +34,7 @@ Now that we know why we should use partials and where to store them, let's make 
 
 That code will look for a file named `_banner.cfm` in the current controller's view folder and include it.
 
-Let's say we're in the `blog` controller. Then the file that will be included is `views/blog/_banner.cfm`.
+Let's say we're in the `blog` controller. Then the file that will be included is `app/views/blog/_banner.cfm`.
 
 As you can see, you don't need to specify the `.cfm` part or the underscore when referencing a partial.
 
@@ -76,7 +76,7 @@ Just like a regular page, Wheels partials also understand the concept of layouts
 #includePartial(partial="newsItem", layout="/boxes/blue")#
 ```
 
-This will wrap the partial with the code found in `views/boxes/_blue.cfm`. Just like with other layouts, you use [includeContent()](https://api.cfwheels.org/controller.includecontent.html) to represent the partial's content.
+This will wrap the partial with the code found in `app/views/boxes/_blue.cfm`. Just like with other layouts, you use [includeContent()](https://api.cfwheels.org/controller.includecontent.html) to represent the partial's content.
 
 That said, your `_blue.cfm` file could end up looking something like this:
 
@@ -105,7 +105,7 @@ Here's an example where we cache a partial for 15 minutes:
 Because it's quite common to use partials in conjunction with objects and queries, Wheels has built-in support for this too. Have a look at the code below, which passes in an object to a partial:
 
 ```javascript
-cust = model("customer").findByKey(params.key);
+cust = application.wo.model("customer").findByKey(params.key);
 #includePartial(cust)#
 ```
 
@@ -118,7 +118,7 @@ Try that code and `<cfdump>` the `arguments` struct inside the partial file, and
 Similar to passing in an object, you can also pass in a query result set to [includePartial()](https://api.cfwheels.org/controller.includepartial.html). Here's how that looks:
 
 ```javascript
-customers = model("customer").findAll();
+customers = application.wo.model("customer").findAll();
 #includePartial(partial="customers", query=customers)#
 ```
 
@@ -172,7 +172,7 @@ In this case, it's useful to use a partial to display each comment (using [inclu
 Here's what your controller action that receives the AJAX form submission would look like:
 
 ```javascript
-comment = model("comment").create(params.newComment);
+comment = application.wo.model("comment").create(params.newComment);
 renderPartial(comment);
 ```
 

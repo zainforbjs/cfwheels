@@ -10,6 +10,32 @@ CFWheels follows Semantic Versioning ([http://semver.org/](http://semver.org)) s
 
 Generally speaking, upgrading CFWheels is as easy as replacing the `wheels` folder, especially for those small maintenance releases: however, there are usually exceptions in minor point releases (i.e, `1.1` to `1.3` required replacing other files outside the `wheels` folder). The notes below detail those changes.
 
+### Upgrading to 3.0.0
+
+#### Compatibility Changes
+
+Adobe Coldfusion 2016 and below are no longer compatible with CFWheels going forward. Consequently, these versions have been removed from the Wheels Internal Test Suites.
+
+#### Code changes
+
+* Prefix global and controller functions with `application.wo`. For example, change the `model("")` function in your controllers to `application.wo.model("")`.
+* Migrate your tests from the `tests` directory which are written with rocketUnit and rewrite them into [Testbox](https://www.ortussolutions.com/products/testbox) in the `tests/Testbox` directory. Starting with CFWheels 3.x, [Testbox](https://www.ortussolutions.com/products/testbox) will replace RocketUnit as the default testing framework.
+* Starting with CFWheels 3.x, [Wirebox](https://www.ortussolutions.com/products/wireboxhttps://www.ortussolutions.com/products/wirebox) will be used as the default dependency injector.
+* After installing CFWheels 3.x, you'll have to run `box install` to intall testbox and wirebox in your application as they are not shipped with CFWheels but are rather listed in `box.json` file as dependencies to be installed.
+* Added Mappings for the `app`, `vendor`, `wheels`, `wirebox`, `testbox` and `tests` directories.
+* `root.cfm` and `rewrite.cfm` have been removed. All the requests are now being redirected only through `public/index.cfm`.
+* A `.env` file has been added in the root of the application which adds the H2 database extension for lucee and sets the cfadmin password to `commandbox` for both [Lucee](http://lucee.org) and [Adobe ColdFusion](http://www.adobe.com/products/coldfusion/).
+
+#### Changes to the wheels folder
+
+* Replace the `wheels` folder with the new one from the 3.0.0 download.
+* Move the `wheels` folder inside the `vendor` folder.
+
+#### Changes outside the wheels folder
+
+* Moved the `config`, `controllers`, `events`, `global`, `lib`, `migrator`, `models`, `plugins`, `snippets` and `views` directories inside the `app` directory.
+* Moved the `files`, `images`, `javascripts`, `miscellaneous`, `stylesheets` directories and `Application.cfc`, `index.cfm` and `urlrewrite.xml` files into the `public` folder.
+
 ### Upgrading to 2.3.x
 
 Replace the `wheels` folder with the new one from the 2.3.0 download.
@@ -66,7 +92,7 @@ The [addRoute()](https://api.cfwheels.org/v1.4.5/addroute.html) function has bee
 
 A limited version of the "wildcard" route (`[controller]/[action]/[key]`) is available as `[controller]/[action]`) if you use the new [wildcard()](https://api.cfwheels.org/mapper.wildcard.html) mapper method:
 
-{% code title="config/routes.cfm" %}
+{% code title="app/config/routes.cfm" %}
 ```javascript
 mapper()
     .wildcard()

@@ -43,7 +43,7 @@ It is also important to note that although you can overwrite functions, they are
 
 ### Example: Overriding timeAgoInWords()
 
-Let's say that we wanted Wheels's built-in function [timeAgoInWords()](https://api.cfwheels.org/v2.2/controller.timeAgoInWords.html) to return the time followed by the string " (approximately)":
+Let's say that we wanted Wheels's built-in function [timeAgoInWords()](https://api.cfwheels.org/controller.timeAgoInWords.html) to return the time followed by the string " (approximately)":
 
 {% code title="timeAgoInWords.cfc" %}
 ```javascript
@@ -81,15 +81,15 @@ Finally, there is a way to specify that your plugin needs another plugin install
 
 ### Making Plugin Development More Convenient with Wheels Settings
 
-When your Wheels application first initializes, it will unzip and cache the zip files in the `plugins` folder. Each plugin then has its own expanded subfolder. If a subfolder exists but has no corresponding zip file, Wheels will delete the folder and its contents.
+When your Wheels application first initializes, it will unzip and cache the zip files in the `app/plugins` folder. Each plugin then has its own expanded subfolder. If a subfolder exists but has no corresponding zip file, Wheels will delete the folder and its contents.
 
 This is convenient when you're deploying plugins but can be annoying when you're developing your own plugins. By default, every time you make a change to your plugin, you need to rezip your plugin files and reload the Wheels application by adding `?reload=true` to the URL.
 
 ### Disabling Plugin Overwriting
 
-To force Wheels to skip the unzipping process, set the `overwritePlugins` setting to `false`development\` environment.
+To force Wheels to skip the unzipping process, set the `overwritePlugins` setting to `false` in the development\` environment.
 
-{% code title="config/development/settings.cfm" %}
+{% code title="app/config/development/settings.cfm" %}
 ```javascript
 set(overwritePlugins=false);
 ```
@@ -99,9 +99,9 @@ With this setting, you'll be able to reload your application without worrying ab
 
 ### Disabling Plugin Folder Deletion
 
-To force Wheels to skip the folder deletion process, set the `deletePluginDirectories` setting to`false` for your `development` environment.
+To force Wheels to skip the folder deletion process, set the `deletePluginDirectories` setting to `false` for your `development` environment.
 
-{% code title="config/design/settings.cfm" %}
+{% code title="app/config/development/settings.cfm" %}
 ```javascript
 set(deletePluginDirectories=false);
 ```
@@ -109,7 +109,7 @@ set(deletePluginDirectories=false);
 
 With this setting, you can now develop new plugins in your application without worrying about having a corresponding zip file in place.
 
-See the chapter on [Configuration and Defaults](https://guides.cfwheels.org/cfwheels-guides/working-with-cfwheels/configuration-and-defaults) for more details about changing Wheels settings.
+See the chapter on [Configuration and Defaults](https://guides.cfwheels.org/2.5.0/v/3.0.0-snapshot/working-with-cfwheels/configuration-and-defaults) for more details about changing Wheels settings.
 
 ### Stand-Alone Plugins
 
@@ -154,7 +154,7 @@ The javaDoc style comments will automatically show this function under Plugins >
 
 ### Box.json
 
-With `2.x`, a `box.json` is required for new plugins. Read the [Publishing Plugins](https://guides.cfwheels.org/docs/publishing-plugins) chapter for more details on that. One advantage is that CFWheels now includes the version and meta data for each plugin when there's a `box.json` file.
+With `2.x`, a `box.json` is required for new plugins. Read the [Publishing Plugins](https://guides.cfwheels.org/2.5.0/v/3.0.0-snapshot/plugins/publishing-plugins) chapter for more details on that. One advantage is that CFWheels now includes the version and meta data for each plugin when there's a `box.json` file.
 
 ```javascript
 // Version Number

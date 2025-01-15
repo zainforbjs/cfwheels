@@ -8,16 +8,16 @@ In the CFWheels core, we've adopted javadoc-style syntax (with a few twists of o
 
 ### Browse the Core API
 
-The first thing to notice is the new ‘\[View Docs]’ link in the debug section in the footer:\
+The first thing to notice is the new ‘\[Docs]’ link in the debug section in the footer:\
 Following that link leads you to the main internal documentation.&#x20;
 
 ![](../.gitbook/assets/29a95a8-docs1.jpg)
 
-The three column layout is designed to allow for quick filtering by section or function name. On the left are the main CFWheels core categories, such as Controller and Model functions, which are then broken down into sub categories, such as Flash and Pagination functions etc. Clicking on a link in the first column will filter the list in the second and third columns with all the functions which match (including child functions of that category).
+The three-column layout is designed to allow for quick filtering by section or function name. On the right are the main CFWheels core categories, such as Controller and Model functions. These categories are further divided into subcategories, such as Flash and Pagination functions. Clicking on a link in the right column will filter the list in the left and middle columns to show all matching functions, including child functions of that category.
 
-Filtering by function name is made simple by a “Filter as you type” search field in the second column, so getting to the right function should be very quick.
+Filtering by function name is made simple by a “filter-as-you-type” search field in the left column, making it very quick to find the right function.
 
-The third column contains the main function definition, including tags, parameters and code samples.
+The middle column contains the main function definition, including tags, parameters and code samples.
 
 ### How is it generated?
 
@@ -76,6 +76,6 @@ Whilst the core has additional code samples which can be loaded from text files,
 
 ### Roadmap
 
-Whilst this API/function explorer is a great first step, you’ll notice your controller and model specific functions aren’t included (only those shared amongst controllers, or in the `/global/functions.cfm` file. This is because we’re only looking at the main `Model.cfc` and `Controller.cfc` and what it can access.
+Whilst this API/function explorer is a great first step, you’ll notice your controller and model specific functions aren’t included (only those shared amongst controllers, or in the `/app/global/functions.cfm` file. This is because we’re only looking at the main `Model.cfc` and `Controller.cfc` and what it can access.
 
 In CFWheels 2.1, we’ll look at adding a full Controller and Model metadata explorer using the same techniques, and map functions like `show()` to their respective routes too.

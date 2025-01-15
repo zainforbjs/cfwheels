@@ -4,7 +4,7 @@ With the new routing system in CFWheels 2.x, there are lots of nice features whi
 
 For example, we may have a whole "Admin" section, where for each endpoint, we need to check some permissions, and possibly load some default data. Let's say we have a `Users` controller which provides standard CRUD operations.
 
-{% code title="config/routes.cfm" %}
+{% code title="app/config/routes.cfm" %}
 ```javascript
 .mapper()
   .namespace("admin")
@@ -14,15 +14,15 @@ For example, we may have a whole "Admin" section, where for each endpoint, we ne
 ```
 {% endcode %}
 
-This will automatically look for the `Users.cfc` controller in `controllers/admin/`.
+This will automatically look for the `Users.cfc` controller in `app/controllers/admin/`.
 
 By default, all your controllers `extend="Controller"`, but with a nested controller, we need to change this, as the main `Controller.cfc` isn't at the same folder level.
 
 ### A Handy Mapping
 
-We've added a new mapping in 2.x, called `app`; This mapping will always correspond to your site root, so in our `Users.cfc` we now have two options - extend the core `Controller.cfc` via the app mapping, or perhaps extend another component (possibly `Admin.cfc`) which extends the core Controller instead.
+We've added a new mapping in 3.x, called `app`; This mapping will correspond to the `app` folder, so in our `Users.cfc` we now have two options - extend the core `Controller.cfc` via the app mapping, or perhaps extend another component (possibly `Admin.cfc`) which extends the core Controller instead.
 
-{% code title="admin/Users.cfc" %}
+{% code title="app/controllers/admin/Users.cfc" %}
 ```javascript
 component extends="app.controllers.Controller" {
 
@@ -34,7 +34,7 @@ component extends="app.controllers.Controller" {
 ```
 {% endcode %}
 
-In the above example, we're using the `app` mapping to "go to" the site root, and then look for a folder called `controllers`, and within that, our main `Controller.cfc`.
+In the above example, we're using the `app` mapping to "go to" the `app` folder, and then look for a folder called `controllers`, and within that, our main `Controller.cfc`.
 
 Our `super.config()` call will then run the `config()` function in our base Controller.
 
@@ -42,12 +42,13 @@ We could of course have the following too (just for completeness sake):
 
 {% code title="File system" %}
 ```
-/controllers/
-  /admin/
-    - Admin.cfc
-    - Users.cfc
-  /public/
-    - etc.
+/app/
+  /controllers/
+    /admin/
+      - Admin.cfc
+      - Users.cfc
+    /public/
+      - etc.
 ```
 {% endcode %}
 
@@ -57,7 +58,7 @@ And then add the `app.controllers.Controller` mapping to `Admin.cfc`, and the `e
 
 Of course, we can _extend_ this concept (ha!) to Models too. However, this is either limited to tableless models, or models where you implicitly specify the `table()` call. As Wheels will look for the tablename dependent on the model file location, it'll get confused if in a sub-directory.
 
-{% code title="models/auth/LDAP.cfc" %}
+{% code title="app/models/auth/LDAP.cfc" %}
 ```javascript
 component extends="app.models.Model"
 {
@@ -75,6 +76,6 @@ It also potentially makes your `model()` calls more complex, as you need to spec
 {% code title="Example nested model call" %}
 ```javascript
 // Example for "LDAP.cfc" in "/models/auth"
-myNewLDAPModel=model("auth.LDAP").new();
+myNewLDAPModel=application.wo.model("auth.LDAP").new();
 ```
 {% endcode %}

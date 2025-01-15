@@ -15,7 +15,7 @@ CFWheels is here to take you to greener pastures with its form helper functions.
 
 Here is a simple form for editing a user profile. Normally, you would code your web form similarly to this:
 
-{% code title="views/profiles/edit.cfm" %}
+{% code title="app/views/profiles/edit.cfm" %}
 ```html
 <cfoutput>
 
@@ -65,7 +65,7 @@ The good news is that CFWheels simplifies this quite a bit for you. At first, it
 
 Let's rewrite and then explain.
 
-{% code title="views/profiles/edit.cfm" %}
+{% code title="app/views/profiles/edit.cfm" %}
 ```html
 <cfoutput>
 
@@ -111,9 +111,9 @@ I know what you are thinking. 9 lines of code can't replace all that work, right
 
 ### Linking up the Form's Action with startFormTag
 
-The first helper you'll notice in the CFWheels-ified version of the form is [startFormTag()](https://api.cfwheels.org/v2.2/controller.startFormTag.html). This helper allows you to easily link up the form to the action that it's posting to in a secure way.
+The first helper you'll notice in the CFWheels-ified version of the form is [startFormTag()](https://api.cfwheels.org/controller.startFormTag.html). This helper allows you to easily link up the form to the action that it's posting to in a secure way.
 
-You'll need to configure the `route` and `method` arguments, depending on the route that you're sending the form to. Also, if the route expects any parameters, you must pass those in as arguments to startFormTag as well. If you haven't already, read up about routes in the [Routing](https://guides.cfwheels.org/cfwheels-guides/handling-requests-with-controllers/routing) chapter.
+You'll need to configure the `route` and `method` arguments, depending on the route that you're sending the form to. Also, if the route expects any parameters, you must pass those in as arguments to startFormTag as well. If you haven't already, read up about routes in the [Routing](https://guides.cfwheels.org/2.5.0/v/3.0.0-snapshot/handling-requests-with-controllers/routing) chapter.
 
 As we said, when linking a form to a route, there are 3 pieces of information that you will need to work with:
 
@@ -124,12 +124,12 @@ As we said, when linking a form to a route, there are 3 pieces of information th
 {% hint style="info" %}
 #### Use Routes for Form Posts
 
-CFWheels's default wildcard `controller/action`-based URLs will not accept form posts for security reasons. This is due to an attack known as [Cross Site Request Forgery (CSRF)](https://www.owasp.org/index.php/Cross-Site\_Request\_Forgery\_\(CSRF\)). We strongly recommend configuring [routes](https://guides.cfwheels.org/cfwheels-guides/handling-requests-with-controllers/routing) to post your forms to.
+CFWheels's default wildcard `controller/action`-based URLs will not accept form posts for security reasons. This is due to an attack known as [Cross Site Request Forgery (CSRF)](https://owasp.org/www-community/attacks/csrf). We strongly recommend configuring [routes](https://guides.cfwheels.org/2.5.0/v/3.0.0-snapshot/handling-requests-with-controllers/routing) to post your forms to.
 {% endhint %}
 
-Most of the time, you'll probably be working with a resource. Your `config/routes.cfm` may look something like this:
+Most of the time, you'll probably be working with a resource. Your `app/config/routes.cfm` may look something like this:
 
-{% code title="config/routes.cfm" %}
+{% code title="app/config/routes.cfm" %}
 ```javascript
 mapper()
     .resources("users")
@@ -137,7 +137,7 @@ mapper()
 ```
 {% endcode %}
 
-If you click the **View Routes** link in the debug footer, you'll be most interested in these types of routes for your forms:
+If you click the **Routes** link in the debug footer, you'll be most interested in these types of routes for your forms:
 
 | Name  | Method | Pattern       | Controller | Action |
 | ----- | ------ | ------------- | ---------- | ------ |
@@ -146,11 +146,11 @@ If you click the **View Routes** link in the debug footer, you'll be most intere
 | user  | PATCH  | /users/\[key] | users      | update |
 | user  | DELETE | /users/\[key] | users      | delete |
 
-Once you get to this list of routes, it really doesn't matter how you authored them in your `config/routes.cfm`. What matters is that you know the names, methods, and parameters that the routes expect. (With some practice, you'll probably be able to look at `config/routes.cfm` and know exactly what the names, methods, and parameters are though.)
+Once you get to this list of routes, it really doesn't matter how you authored them in your `app/config/routes.cfm`. What matters is that you know the names, methods, and parameters that the routes expect. (With some practice, you'll probably be able to look at `app/config/routes.cfm` and know exactly what the names, methods, and parameters are though.)
 
-If you are creating a record, your route is likely setup to accept a `POST` method. That happens to be the default for [startFormTag()](https://api.cfwheels.org/v2.2/controller.startFormTag.html), so you don't even need to include the `method` argument. You can then pass the `users` route name to the `route` argument:
+If you are creating a record, your route is likely setup to accept a `POST` method. That happens to be the default for [startFormTag()](https://api.cfwheels.org/controller.startFormTag.html), so you don't even need to include the `method` argument. You can then pass the `users` route name to the `route` argument:
 
-{% code title="views/users/new.cfm" %}
+{% code title="app/views/users/new.cfm" %}
 ```html
 <!--- `method` argument defaults to `post`, so we don't need to pass it in. --->
 #startFormTag(route="users")#
@@ -219,7 +219,7 @@ Browsers (even the modern ones) tend to only work well with `GET` and `POST` req
 
 To keep things secure, CFWheels will still use `method="post"` on the form to send `PATCH` and `DELETE` requests. But the CFWheels router will recognize a `PATCH` or `DELETE` request if a form variable called `_method` is also sent, specifying the `PATCH` or `DELETE` method.
 
-Under the hood, [startFormTag()](https://api.cfwheels.org/v2.2/controller.startFormTag.html) will also generate a hidden field called `_method` that passes the request method along with the form `POST`.
+Under the hood, [startFormTag()](https://api.cfwheels.org/controller.startFormTag.html) will also generate a hidden field called `_method` that passes the request method along with the form `POST`.
 
 So the `<form>` tag generated along with a `method` of `patch` will look something like this:
 
@@ -230,17 +230,17 @@ So the `<form>` tag generated along with a `method` of `patch` will look somethi
 </form>
 ```
 
-You'll notice that [startFormTag()](https://api.cfwheels.org/v2.2/controller.startFormTag.html) will also add another hidden field along with `POST`ed requests called `authenticityToken`, which helps prevent against [Cross-Site Request Forgery (CSRF) attacks](https://www.owasp.org/index.php/Cross-Site\_Request\_Forgery\_\(CSRF\)).
+You'll notice that [startFormTag()](https://api.cfwheels.org/controller.startFormTag.html) will also add another hidden field along with `POST`ed requests called `authenticityToken`, which helps prevent against [Cross-Site Request Forgery (CSRF) attacks](https://owasp.org/www-community/attacks/csrf).
 
-The moral of the story: [startFormTag()](https://api.cfwheels.org/v2.2/controller.startFormTag.html) takes care of all of this for you. If you for some reason decide to wire up your own custom `<form>` tag that must `POST` data, be sure to add your own hidden fields for `_method` and use the [authenticityTokenField()](https://api.cfwheels.org/v2.2/controller.authenticityTokenField.html) helper to generate the hidden field for the `authenticityToken` that CFWheels will require on the `POST`.
+The moral of the story: [startFormTag()](https://api.cfwheels.org/controller.startFormTag.html) takes care of all of this for you. If you for some reason decide to wire up your own custom `<form>` tag that must `POST` data, be sure to add your own hidden fields for `_method` and use the [authenticityTokenField()](https://api.cfwheels.org/controller.authenticityTokenField.html) helper to generate the hidden field for the `authenticityToken` that CFWheels will require on the `POST`.
 
 ### Refactoring Common Settings with Global Defaults
 
-By setting up global defaults (as explained in the [Configuration and Defaults](https://guides.cfwheels.org/cfwheels-guides/working-with-cfwheels/configuration-and-defaults)) for the `prependToLabel`, `append`, and `labelPlacement` arguments, you can make the form code ever simpler across your whole application.
+By setting up global defaults (as explained in the [Configuration and Defaults](https://guides.cfwheels.org/2.5.0/v/3.0.0-snapshot/working-with-cfwheels/configuration-and-defaults)) for the `prependToLabel`, `append`, and `labelPlacement` arguments, you can make the form code ever simpler across your whole application.
 
-Here are the settings that you would apply in `config/settings.cfm`:
+Here are the settings that you would apply in `app/config/settings.cfm`:
 
-{% code title="config/settings.cfm" %}
+{% code title="app/config/settings.cfm" %}
 ```javascript
 set(
     functionName="textField",
@@ -260,7 +260,7 @@ set(
 
 And here's how our example code can be simplified as a result:
 
-{% code title="views/profiles/edit.cfm" %}
+{% code title="app/views/profiles/edit.cfm" %}
 ```html
 <cfoutput>
 
@@ -290,11 +290,11 @@ If you pass the form an empty instance named `profile` (for example, created by 
 
 ### Refactoring Label Names
 
-If you look at the previous examples, there is one other bit of configuration that we can clean up: the `label` arguments passed to [textField()](https://api.cfwheels.org/v2.2/controller.textField.html) and [select()](https://api.cfwheels.org/v2.2/controller.select.html).
+If you look at the previous examples, there is one other bit of configuration that we can clean up: the `label` arguments passed to [textField()](https://api.cfwheels.org/controller.textField.html) and [select()](https://api.cfwheels.org/controller.select.html).
 
 Because we've named `firstName`, `lastName`, and `departmentId` in conventional ways (camel case), CFWheels will generate the labels for us automatically:
 
-{% code title="views/profiles/edit.cfm" %}
+{% code title="app/views/profiles/edit.cfm" %}
 ```html
 <cfoutput>
 
@@ -319,9 +319,9 @@ Because we've named `firstName`, `lastName`, and `departmentId` in conventional 
 
 You'll notice that CFWheels is even smart enough to translate the `departmentId` property to `Department`.
 
-If you ever need to override a label, you can do so in the model's initializer using the `label` argument of the [property()](https://api.cfwheels.org/v2.2/model.property.html)method:
+If you ever need to override a label, you can do so in the model's initializer using the `label` argument of the [property()](https://api.cfwheels.org/model.property.html)method:
 
-{% code title="models/User.cfc" %}
+{% code title="app/models/User.cfc" %}
 ```javascript
 component extends="Model" {
     function init() {
@@ -335,7 +335,7 @@ component extends="Model" {
 
 If you really want to secure a form, you need to do it server side. Sure, you can add JavaScript here and there to validate your web form. Unfortunately, disabling JavaScript (and thus your JavaScript-powered form validation) is simple in web browsers, and malicious bots tend not to listen to JavaScript.
 
-Securing the integrity of your web forms in CFWheels on the server side is very easy. Assuming that you have read the chapter on [Object Validation](https://guides.cfwheels.org/cfwheels-guides/database-interaction-through-models/object-validation), you can rest assured that your code is a lot more secure now.
+Securing the integrity of your web forms in CFWheels on the server side is very easy. Assuming that you have read the chapter on [Object Validation](https://guides.cfwheels.org/2.5.0/v/3.0.0-snapshot/database-interaction-through-models/object-validation), you can rest assured that your code is a lot more secure now.
 
 ### Displaying a List of Model Validation Errors
 
@@ -345,12 +345,12 @@ In the controller, let's say that this just happened. Your model includes valida
 
 The `update` action may look something like this:
 
-{% code title="controllers/Profiles.cfc" %}
+{% code title="app/controllers/Profiles.cfc" %}
 ```javascript
 function update() {
     // In this example, we're loading an existing object based on the user's
     // session.
-    profile = model("user").findByKey(session.userId);
+    profile = application.wo.model("user").findByKey(session.userId);
 
     // If everything validated, then send user to success message
     if (profile.update(params.profile)) {
@@ -366,11 +366,11 @@ function update() {
 ```
 {% endcode %}
 
-Notice that the view for the `edit` action is rendered if the `profile` object's [update()](https://api.cfwheels.org/v2.2/model.update.html) returns `false`.
+Notice that the view for the `edit` action is rendered if the `profile` object's [update()](https://api.cfwheels.org/model.update.html) returns `false`.
 
 Let's take the previous form example and add some visual indication to the user about what he did wrong and where, by simply adding the following code on your form page.
 
-{% code title="views/profiles/edit.cfm" %}
+{% code title="app/views/profiles/edit.cfm" %}
 ```html
 <cfoutput>
 
@@ -409,7 +409,7 @@ Let's say that would rather display the error messages just below the failed fie
 
 Let's add some error message handlers for the `firstName`, `lastName`, and `departmentId` fields:
 
-{% code title="views/profiles/edit.cfm" %}
+{% code title="app/views/profiles/edit.cfm" %}
 ```html
 <cfoutput>
 
@@ -501,7 +501,7 @@ Assume that the `departments` variable passed to the options argument contains a
 
 Each data type has its advantages and disadvantages:
 
-* **Queries** allow you to order your results, but you can only use one column. But this can be overcome using [Calculated Properties](https://guides.cfwheels.org/cfwheels-guides/database-interaction-through-models/calculated-properties).
+* **Queries** allow you to order your results, but you can only use one column. But this can be overcome using [Calculated Properties](https://guides.cfwheels.org/2.5.0/v/3.0.0-snapshot/database-interaction-through-models/calculated-properties).
 * **Structs** allow you to build out static or dynamic values using whatever data that you please, but there is no guarantee that your CFML engine will honor the order in which you add the elements.
 * **Arrays** also allow you to build out static or dynamic values, and there is a guarantee that your CFML engine will honor the order. But arrays are a tad more verbose to work with.
 
@@ -517,7 +517,7 @@ Here's an example of how you might use each option:
 // Query generated in your controller --->
 departments = findAll(orderBy="name");
 
-// Hard-coded struct set up in events/onapplicationstart.cfm
+// Hard-coded struct set up in app/events/onapplicationstart.cfm
 application.departments["1"] = "Sales";
 application.departments["2"] = "Marketing";
 application.departments["3"] = "Information Technology";
@@ -647,7 +647,7 @@ In order for your form to pass the correct `enctype`, you can pass `multipart=tr
 
 Looking at this form code, it isn't 100% evident how to set an initial value for the fields:
 
-{% code title="views/accounts/new.cfm" %}
+{% code title="app/views/accounts/new.cfm" %}
 ```html
 #startFormTag(route="accounts")#
     #textField(objectName="account", property="title")#
@@ -661,15 +661,15 @@ What if we want a random title pre-filled, a certain account type pre-selected, 
 
 The answer lies in the `account` object that the fields are bound to. Let's say that you always wanted this behavior to happen when the form for a new account loads. You can do something like this in the controller:
 
-{% code title="controllers/Accounts.cfc" %}
+{% code title="app/controllers/Accounts.cfc" %}
 ```javascript
 component extends="controllers.Controller" {
     function new() {
-        local.defaultAccountType = model("accountType").findOne(
+        local.defaultAccountType = application.wo.model("accountType").findOne(
           where="isDefault=1"
         );
 
-        account = model("account").new(
+        account = application.wo.model("account").new(
             title=generateRandomTitle(),
             accountTypeId=local.defaultAccountType.key(),
             subscribedToNewsletter=true

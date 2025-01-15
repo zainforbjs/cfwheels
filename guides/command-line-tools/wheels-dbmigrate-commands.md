@@ -20,10 +20,10 @@ wheels dbmigrate info
 
 ```
 ❯ wheels db info
-Sending: http://127.0.0.1:59144/rewrite.cfm?controller=wheels&action=wheels&view=cli&command=info
+Sending: http://127.0.0.1:59144/?controller=wheels&action=wheels&view=cli&command=info
 Call to bridge was successful.
 +-----------------------------------------+-----------------------------------------+
-| Datasource:               MyCFWheelsApp | Total Migrations:                     3 |
+| Datasource:                   wheels.fw | Total Migrations:                     3 |
 | Database Type:                       H2 | Available Migrations:                 2 |
 |                                         | Current Version:         20220619110404 |
 |                                         | Latest Version:          20220619110706 |

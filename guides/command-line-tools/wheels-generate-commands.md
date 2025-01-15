@@ -37,7 +37,7 @@ You can accept the name offered or change it to whatever name you like. We try t
 
 ![wheels new - step 2](<../.gitbook/assets/Screen Shot 2022-06-18 at 12.31.01 PM.png>)
 
-You can select a template to use. If you are reading this before CFWheels 2.4 is released you may want to select the Bleeding Edge Base Template.
+You can select a template to use for your app.
 
 ![wheels new - step 3](<../.gitbook/assets/Screen Shot 2022-06-18 at 12.32.14 PM.png>)
 
@@ -57,7 +57,7 @@ On this step you are asked if you'd like to use the H2 Database, in which case w
 
 ![wheels new - step 7](<../.gitbook/assets/Screen Shot 2022-06-18 at 12.34.44 PM.png>)
 
-On this last step, you are asked if you want us to include a box.json file so you can eventually submit this to ForgeBox.io for sharing with he world.
+On this last step, you are asked if you want us to include a box.json file so you can eventually submit this to ForgeBox.io for sharing with the world.
 
 ![wheels new - step 8](<../.gitbook/assets/Screen Shot 2022-06-18 at 12.35.09 PM.png>)
 
@@ -127,7 +127,7 @@ wheels generate route [objectname]
 
 ## `wheels generate controller`
 
-I generate a controller in the `controllers/` directory. You can either pass in a list of actions to stub out or the standard CRUD methods will be generated.
+I generate a controller in the `app/controllers/` directory. You can either pass in a list of actions to stub out or the standard CRUD methods will be generated.
 
 Create a user controller with full CRUD methods
 ```
@@ -139,15 +139,15 @@ Create a user object with just "index" and "customaction" methods
 wheels generate controller user index,customaction
 ```
 
-| Parameter  | Required | Default | Description                                                        |
-| ---------- | -------- | ------- | ------------------------------------------------------------------ |
-| name       | true     |         | Name of the controller to create without the .cfc                  |
-| actionList | false    |         | optional list of actions, comma delimited                          |
-| directory  | false    |         | if for some reason you don't have your controllers in controllers/ |
+| Parameter  | Required | Default | Description                                                            |
+| ---------- | -------- | ------- | ---------------------------------------------------------------------- |
+| name       | true     |         | Name of the controller to create without the .cfc                      |
+| actionList | false    |         | optional list of actions, comma delimited                              |
+| directory  | false    |         | if for some reason you don't have your controllers in app/controllers/ |
 
 ## `wheels generate model`
 
-This command generates a model in the `models/` folder and creates the associated DB Table using migrations.
+This command generates a model in the `app/models/` folder and creates the associated DB Table using migrations.
 
 Create "users" table and "User.cfc" in models:
 ```
@@ -204,7 +204,7 @@ wheels generate property user isActive boolean 1
 
 ## `wheels generate view`
 
-This command generates a view file in the `views/` directory when specifying the object name and the action. If a directory for the object does not exist a subdirectory will be created in the `views/` directory and the action NAME.cfm file place into it.
+This command generates a view file in the `app/views/` directory when specifying the object name and the action. If a directory for the object does not exist a subdirectory will be created in the `app/views/` directory and the action NAME.cfm file place into it.
 
  Create a default file called show.cfm without a template
  ```
@@ -222,9 +222,13 @@ This command generates a view file in the `views/` directory when specifying the
 | name       | true     |         | Name of the file to create, i.e, edit                                 |
 | template   | false    |         | template (used in Scaffolding) - options crud/_form,crud/edit,crud/index,crud/new,crud/show |
 
+The "crud/show" parameter of this command is referring to an existing template to be used to generate the "user/show" view. The prefix "crud" points to a templates directory in the app that holds a "crud" directory in which templates like "show" are placed. In this way the "crud/show" parameter fetches the show.txt template in the "templates/crud" directory and uses that for generating the "user/show" view.
+
+![](.gitbook/assets/222650494-da2c1b95-f817-40c3-a38e-b9f9db555ae8.png)
+
 ## `wheels generate test`
 
-This command generates a test stub in `/test/TYPE/NAME.cfc`.
+This command generates a test stub in `/tests/Testbox/specs/TYPE/NAME.cfc`.
 
 ```
 wheels generate test model user

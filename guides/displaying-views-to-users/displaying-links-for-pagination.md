@@ -4,7 +4,7 @@ description: How to create links to other pages in your paginated data in your v
 
 # Displaying Links for Pagination
 
-In the chapter titled [Getting Paginated Data](https://guides.cfwheels.org/cfwheels-guides/database-interaction-through-models/getting-paginated-data), we talked about how to get pages of records from the database (records 11-20, for example). Now we'll show you how to create links to the other pages in your view.
+In the chapter titled [Getting Paginated Data](https://guides.cfwheels.org/2.5.0/v/3.0.0-snapshot/database-interaction-through-models/getting-paginated-data), we talked about how to get pages of records from the database (records 11-20, for example). Now we'll show you how to create links to the other pages in your view.
 
 ### Displaying Paginated Links with the paginationLinks Function
 
@@ -24,7 +24,7 @@ Simple is good, but sometimes you want a little more control over how the links 
 
 **The **_**name**_** Argument**
 
-By default, Wheels will create all links with page as the variable that holds the page numbers. So the HTML code will look something like this:
+By default, Wheels will create all links with **page** as the variable that holds the page numbers. So the HTML code will look something like this:
 
 ```
 <a href="/main/userlisting?page=1">
@@ -38,7 +38,7 @@ To change page to something else, you use the name argument like so:
 #paginationLinks(name="pgnum")#
 ```
 
-By the way, perhaps you noticed how Wheels chose to use that hideous question mark in the URL, despite the fact that you have URL rewriting turned on? Because [paginationLinks()](https://api.cfwheels.org/controller.paginationlinks.html) uses [linkTo()](https://api.cfwheels.org/controller.linkto.html) in the background, you can easily get rid of it by creating a custom route. You can read more about this in the [Using Routes](https://guides.cfwheels.org/docs/using-routes) chapter.
+By the way, perhaps you noticed how Wheels chose to use that hideous question mark in the URL, despite the fact that you have URL rewriting turned on? Because [paginationLinks()](https://api.cfwheels.org/controller.paginationlinks.html) uses [linkTo()](https://api.cfwheels.org/controller.linkto.html) in the background, you can easily get rid of it by creating a custom route. You can read more about this in the [Routing](https://guides.cfwheels.org/2.5.0/v/3.0.0-snapshot/handling-requests-with-controllers/routing) chapter.
 
 **The **_**windowSize**_** Argument**
 
@@ -59,8 +59,8 @@ Here is an example of using handles:
 In the controller...&#x20;
 
 ```javascript
-users = model("user").findAll(handle="userQuery", page=params.page, perPage=25);
-blogs = model("blog").findAll(handle="blogQuery", page=params.page, perPage=25);
+users = application.wo.model("user").findAll(handle="userQuery", page=params.page, perPage=25);
+blogs = application.wo.model("blog").findAll(handle="blogQuery", page=params.page, perPage=25);
 ```
 
 In the view...

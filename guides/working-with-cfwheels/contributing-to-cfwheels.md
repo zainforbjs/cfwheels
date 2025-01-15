@@ -20,7 +20,7 @@ To make sure that we don't have too many chefs in the kitchen, we will be limiti
 At this time, the core team consists of these developers:
 
 * [Peter Amiri](https://github.com/bpamiri)
-* [Andy Bellenie](https://twitter.com/andrewbellenie)
+* [Zain Ul Abideen](https://github.com/zainforbjs)
 
 This does not restrict you from being able to contribute. See "Process for Implementing Code Changes" below for instructions on volunteering. With enough dedication, you can earn a seat on the core team as well!
 
@@ -40,7 +40,7 @@ Here's the process that we'd like for you to follow. This process is in place ma
 
 ## Developing with Docker
 
-To easily develop and test CFWheels locally on multiple CFML engines using Docker, check out the [Docker Instructions](https://github.com/cfwheels/cfwheels/blob/main/src/docker/README.md)
+To easily develop and test CFWheels locally on multiple CFML engines using Docker, check out the [Docker Instructions](https://github.com/cfwheels/cfwheels/blob/main/docker/README.md)
 
 ## Code Style
 
@@ -50,7 +50,7 @@ Additionally, we recommend that any applications written using the CFWheels fram
 
 ## Supported CFML Engines
 
-All code for CFWheels should be written for use with both Adobe ColdFusion 2016 upwards, and Lucee 5 upwards.
+All code for CFWheels should be written for use with both Adobe ColdFusion 2018 upwards, and Lucee 5 upwards.
 
 ## Naming Conventions
 

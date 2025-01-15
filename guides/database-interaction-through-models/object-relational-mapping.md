@@ -10,29 +10,31 @@ Mapping objects in your application to records in your database tables is a key 
 
 ### Class and Object Methods
 
-Unlike most other languages, there is no notion of class level (a.k.a. "static") methods in CFML (at least not in the earlier versions of it which we still support) . This means that even if you call a method that does not need to use any instance data, you still have to create an object first.
+Unlike most other languages, there is no notion of class level (a.k.a. "static") methods in CFML. This means that even if you call a method that does not need to use any instance data, you still have to create an object first.
 
 In CFWheels, we create an object like this:
 
 ```javascript
-model("author");
+application.wo.model("author");
 ```
 
 The built-in CFWheels [model()](https://api.cfwheels.org/controller.model.html) function will return a reference to an `author` object in the `application` scope (unless it's the first time you call this function, in which case it will also create and store it in the `application` scope).
 
-Once you have the `author` object, you can start calling class methods on it, like [findByKey()](https://api.cfwheels.org/model.findbykey.html), for example. [findByKey()](https://api.cfwheels.org/model.findbykey.html)returns an instance of the object with data from the database record defined by the key value that you pass.
+As we explained in the [Beginner Tutorial: Hello Database](https://guides.cfwheels.org/2.5.0/v/3.0.0-snapshot/introduction/readme/beginner-tutorial-hello-database) section, that the controler and global functions reside in the `application.wo` strcuture. So, whenever you want to call the `model()` function, you have to prefix it with the `application.wo`.
 
-Obviously, `author` is just an example here, and you'll use the names of the `.cfc` files you have created in the `models` folder.
+Once you have the `author` object, you can start calling class methods on it, like [findByKey()](https://api.cfwheels.org/model.findbykey.html), for example. [findByKey()](https://api.cfwheels.org/model.findbykey.html) returns an instance of the object with data from the database record defined by the key value that you pass.
+
+Obviously, `author` is just an example here, and you'll use the names of the `.cfc` files you have created in the `app/models` folder.
 
 ```javascript
-authorClass = model("author");
+authorClass = application.wo.model("author");
 authorObject = authorClass.findByKey(1);
 ```
 
 For readability, this is usually combined into the following:
 
 ```javascript
-authorObject = model("author").findByKey(1);
+authorObject = application.wo.model("author").findByKey(1);
 ```
 
 Now `authorObject` is an instance of the `Author` class, and you can call object level methods on it, like [update()](https://api.cfwheels.org/model.update.html) and [save()](https://api.cfwheels.org/model.save.html).
@@ -45,7 +47,7 @@ In this case, the above code updates `firstName` field of the `author` record wi
 
 ### Primary Keys
 
-Traditionally in CFWheels, a primary key is usually named `id`, it increments automatically, and it's of the `integer`data type. However, CFWheels is very flexible in this area. You can setup your primary keys in practically any way you want to. You can use _natural_ keys (`varchar`, for example), _composite keys_ (having multiple columns as primary keys), and you can name the key(s) whatever you want.
+Traditionally in CFWheels, a primary key is usually named `id`, it increments automatically, and it's of the `integer` data type. However, CFWheels is very flexible in this area. You can setup your primary keys in practically any way you want to. You can use _natural_ keys (`varchar`, for example), _composite keys_ (having multiple columns as primary keys), and you can name the key(s) whatever you want.
 
 You can also choose whether the database creates the key for you (using auto-incrementation, for example) or create them yourself directly in your code.
 
@@ -55,21 +57,21 @@ What's best, CFWheels will introspect the database to see what choices you have 
 
 CFWheels comes with a custom built ORM. ORM stands for "Object-Relational Mapping" and means that tables in your relational database map to classes in your application. The records in your tables map to objects of your classes, and the columns in these tables map to properties on the objects.
 
-To create a class in your application that maps to a table in your database, all you need to do is create a new class file in your `models` folder and make it extend the `Model.cfc` file.
+To create a class in your application that maps to a table in your database, all you need to do is create a new class file in your `app/models` folder and make it extend the `Model.cfc` file.
 
 ```javascript
 component extends="Model" {
 }
 ```
 
-If you don't intend to create any custom methods in your class, you can actually skip this step and just call methods without having a file created. It will work just as well. As your application grows, you'll probably want to have your own methods though, so remember the `models` folder. That's where they'll go.
+If you don't intend to create any custom methods in your class, you can actually skip this step and just call methods without having a file created. It will work just as well. As your application grows, you'll probably want to have your own methods though, so remember the `app/models` folder. That's where they'll go.
 
 Once you have created the file (or deliberately chosen not to for now), you will have a bunch of methods available handle reading and writing to the `authors` table. (For the purpose of showing some examples, we will assume that you have created a file named `Author.cfc`, which will then be mapped to the `authors` table in the database).
 
 For example, you can write the following code to get the author with the primary key of `1`, change his first name, and save the record back to the database.
 
 ```javascript
-auth = model("author").findByKey(1);
+auth = application.wo.model("author").findByKey(1);
 auth.firstName = "Joe";
 auth.save();
 ```
@@ -104,7 +106,15 @@ function config() {
 
 With that in place, you have the foundation for a model that never touches the database. When you call methods like [save()](https://api.cfwheels.org/model.save.html), [create()](https://api.cfwheels.org/model.create.html), [update()](https://api.cfwheels.org/model.update.html), and [delete()](https://api.cfwheels.org/model.delete.html) on a tableless model, the entire model lifecycle will still run, including object validation and object callbacks.
 
-Typically, you will want to configure properties and validations manually for tableless models and then override [save()](https://api.cfwheels.org/model.save.html)and other persistence methods needed by your application to persist with the data elsewhere (maybe in the `session`scope, an external NoSQL database, or as an email sent from a contact form).
+Typically, you will want to configure properties and validations manually for tableless models and then override [save()](https://api.cfwheels.org/model.save.html) and other persistence methods needed by your application to persist with the data elsewhere (maybe in the `session` scope, an external NoSQL database, or as an email sent from a contact form).
+
+Features supported:
+
+- Properties
+- Validations
+- Callbacks involving initialisation and validations
+
+See [Building search forms with tableless models in CFWheels](https://cfwheels.org/blog/building-search-forms-with-tableless-models-in-cfwheels) for a worked-out example.
 
 ### Columns and Properties
 
@@ -130,6 +140,6 @@ component extends="Model" {
 
 ### Blank Strings and NULL Values
 
-Since there is no concept of `null` / `nil` in CFML (at least not in the earlier versions of it which we still support), CFWheels will assume that when you save a blank string to the database it should be converted to `NULL`.
+Since there is no concept of `null` / `nil` in CFML, CFWheels will assume that when you save a blank string to the database it should be converted to `NULL`.
 
 For this reason we recommend that you avoid having blank strings stored in the database (since there is no way to distinguish them from `NULL` values once they've been mapped to a CFWheels object / result set).

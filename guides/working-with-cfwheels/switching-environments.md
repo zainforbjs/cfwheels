@@ -16,7 +16,7 @@ By default, all new applications will start in the Development environment which
 
 ### The 4 Environment Modes
 
-Besides the 2 environments mentioned above, there are 2 more. Let's go through them all one by one so you can see the differences between them and choose the most appropriate one given your current stage of development.HTTP
+Besides the 2 environments mentioned above, there are 2 more. Let's go through them all one by one so you can see the differences between them and choose the most appropriate one given your current stage of development.
 
 **Development**
 
@@ -41,13 +41,13 @@ Besides the 2 environments mentioned above, there are 2 more. Let's go through t
 
 **Maintenance**
 
-* Shows your custom maintenance page unless the requesting IP address or user agent is in the exception list (set by calling `set(ipExceptions="127.0.0.1")` in `config/settings.cfm` or passed along in the URL as `except=127.0.0.1`, or as `except=myuseragentstring` to match against the user agent instead).
+* Shows your custom maintenance page unless the requesting IP address or user agent is in the exception list (set by calling `set(ipExceptions="127.0.0.1")` in `app/config/settings.cfm` or passed along in the URL as `except=127.0.0.1`, or as `except=myuseragentstring` to match against the user agent instead. Please note that if passing an exception on the URL using the `except` parameter, you must also provide the `password` parameter if a reload password has been define. This eliminates the possibility of a rouge actor breaking out of maintenance mode by simply adding an `except` to the URL.
 
 This environment mode comes in handy when you want to briefly take your website offline to upload changes or modify databases on production servers.
 
 ### How to Switch Modes
 
-You change the current environment by modifying the `config/environment.cfm` file. After you've modified it, you need to either restart the ColdFusion service or issue a `reload` request. (See below for more info.)
+You change the current environment by modifying the `app/config/environment.cfm` file. After you've modified it, you need to either restart the ColdFusion service or issue a `reload` request. (See below for more info.)
 
 **The reload Request**&#x20;
 
@@ -59,7 +59,7 @@ http://www.mysite.com/?reload=true
 ```
 {% endcode %}
 
-This tells CFWheels to reload the entire framework (it will also run your code in the `events/onapplicationstart.cfm`file), thus picking up any changes made in the `config/environment.cfm` file.
+This tells CFWheels to reload the entire framework (it will also run your code in the `app/events/onapplicationstart.cfm`file), thus picking up any changes made in the `app/config/environment.cfm` file.
 
 **Lazy Reloading**&#x20;
 
@@ -71,11 +71,11 @@ http://www.mysite.com/?reload=testing
 ```
 {% endcode %}
 
-This will make CFWheels skip your `config/environment.cfm` file and just use the URL value instead (`testing`, in this case).
+This will make CFWheels skip your `app/config/environment.cfm` file and just use the URL value instead (`testing`, in this case).
 
 **Password-Protected Reloads**&#x20;
 
-For added protection, you can set the `reloadPassword` variable in `config/settings.cfm`. When set, a reload request will only be honored when the correct password is also supplied, like this:
+For added protection, you can set the `reloadPassword` variable in `app/config/settings.cfm`. When set, a reload request will only be honored when the correct password is also supplied, like this:
 
 {% code title="HTTP" %}
 ```
